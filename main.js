@@ -5,6 +5,9 @@ const fs = require('fs');
 
 const prefix = '?';
 
+let x1 = '';
+let x2 = '';
+
 function getUserFromMention(mention) {
     if (!mention) return;
 
@@ -21,6 +24,18 @@ function getUserFromMention(mention) {
     }
 }
 
+function formbhask(a, b, c){
+    
+    var delta = (b * b) - 4 * a * c;
+
+    let x1up = -b + (Math.sqrt(delta));
+    x1 = parseFloat(x1up / (2 * a));
+
+    let x2up = -b - (Math.sqrt(delta));
+    x2 = parseFloat(x2up / (2 * a));
+
+}
+
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -30,13 +45,14 @@ client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const argvs = message.content.replace(prefix, "").split(" ");
-    const command = argvs[0].toLocaleLowerCase();
+    const command = argvs.shift().toLocaleLowerCase();
 
     if (command === 'comandos') {
         const botimglink = 'https://static.wikia.nocookie.net/clubpenguin/images/e/e5/Tusk_Evil.png/revision/latest/scale-to-width-down/856?cb=20130523222135';
         const Comandsembed = new Discord.MessageEmbed()
             .setTitle(`Olá , está é minha lista de comandos:`)
             .addField('+info', value = 'Veja as informações de uma pessoa e seu imagem de perfil, use +info @pessoa.', inline = false)
+            .addField('+bhask', value = 'Calcule uma equação de segundo grau, use +bhask a b c.', inline = false)
             .setColor('#00FBFC')
             .setImage(botimglink);
 
@@ -62,6 +78,14 @@ client.on('message', message => {
 
 
 
+}else if(command === 'bhask'){
+
+    if (!argvs.length) {
+		return message.channel.send(`Você não colocou todas as três variáveis necessárias, ${message.author}!`);
+	}
+
+	formbhask(argvs[0], argvs[1], argvs[2]);
+    message.channel.send(`Considerando A = ${argvs[0]} , B = ${argvs[1]}, C = ${argvs[2]} ... X1 = ${x1} e X2 = ${x2}.`)
 }
 });
 
