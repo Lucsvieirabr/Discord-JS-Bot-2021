@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Lucsvieirabr/Discord-JS-Bot-2021#readme",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "reconlx": "^1.2.41"
   }
 }

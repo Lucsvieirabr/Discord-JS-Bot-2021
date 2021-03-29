@@ -3,6 +3,27 @@ const client = new Discord.Client();
 
 const fs = require('fs');
 
+const { tictactoe } = require('reconlx');
+
+module.exports = {
+    name: "tictactoe",
+    description : "tic tac toe command",
+
+    async run (bot, message, args){
+
+        const member = message.mentions.members.first()
+        if(!member) return message.channel.send('Por favor escolha uma pessoa para jogar contra!');
+
+        new tictactoe({
+            
+            player_two: member,
+            message: message
+
+        })
+
+
+    }
+}
 const prefix = '?';
 
 let x1 = '';
