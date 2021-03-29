@@ -3,27 +3,8 @@ const client = new Discord.Client();
 
 const fs = require('fs');
 
-const { tictactoe } = require('reconlx');
+let listadeparti = [];
 
-module.exports = {
-    name: "tictactoe",
-    description : "tic tac toe command",
-
-    async run (bot, message, args){
-
-        const member = message.mentions.members.first()
-        if(!member) return message.channel.send('Por favor escolha uma pessoa para jogar contra!');
-
-        new tictactoe({
-            
-            player_two: member,
-            message: message
-
-        })
-
-
-    }
-}
 const prefix = '?';
 
 let x1 = '';
@@ -156,7 +137,51 @@ client.on('message', message => {
 
 
 
+    }else if(command === "giveaway"){
+
+        let giveimg = 'https://i.pinimg.com/originals/41/03/49/41034992711f518f6ff546df87f7ebb3.gif';
+        let intsorteado = argvs[0];
+        let tempo = argvs[1];
+        let giveawayEmbed = new Discord.MessageEmbed()
+        .setTitle('Sorteio novo na área!')
+        .addField(`Intem sorteado`, value = `${intsorteado}`, inline = true)
+        .addField(`Tempo até o fim do sorteio `, value = `${tempo}`, inline = true)
+        .setDescription(`O Adm tá on ! Reajam ( :tada: ) para participar !! `)
+        .setColor('#CB06F2')
+        .setImage(giveimg);
+        message.channel.send(giveawayEmbed).then(sentMessage => {
+
+            sentMessage.react('🎉');
+          });
+          
     }
+
+    });
+
+    client.on('messageReactionAdd', async (reaction, user) => {
+        // When we receive a reaction we check if the reaction is partial or not
+        let userMarq = `@${user.username}#${user.discriminator}`;
+        if (reaction.emoji.name === '🎉'){
+            if (reaction.partial) {
+                // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
+                try {
+                    await reaction.fetch();
+                } catch (error) {
+                    console.error('Something went wrong when fetching the message: ', error);
+                    // Return as `reaction.message.author` may be undefined/null
+                    return;
+                }
+            }
+
+
+            if (userMarq != '@FrozenBot#4607'){
+
+                listadeparti.push(userMarq);
+                console.log(listadeparti);
+            }
+        }
+        
+        
 
     });
 
