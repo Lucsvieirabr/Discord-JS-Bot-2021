@@ -1,3 +1,4 @@
+const { time } = require('console');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
@@ -56,6 +57,7 @@ client.on('message', message => {
             .addField('?info', value = 'Veja as informações de uma pessoa e seu imagem de perfil, use ?info @pessoa.', inline = false)
             .addField('?bhask', value = 'Calcule uma equação de segundo grau, use ?bhask a b c.', inline = false)
             .addField('?cafune', value = 'Faça um cafuné em alguém, use ?cafune @pessoa.', inline = false)
+            .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
             .addField('?slap', value = 'De aquele tapa no mongol que ta enchendo o saco,use ?slap e o nome da pessoa, ou marque ela.', inline = false)
             .setColor('#00FBFC')
             .setImage(botimglink);
@@ -154,6 +156,105 @@ client.on('message', message => {
             sentMessage.react('🎉');
           });
           
+    }else if(command === "emais"){
+
+        let men1 = argvs[0];
+        let men2 = argvs[1];
+        let eoq = argvs[2];
+        let men1por = Math.floor(Math.random() * 101);
+        let men2por = Math.floor(Math.random() * 101);
+        message.channel.send(`O  ${men1} é ${men1por}% ${eoq}, e o ${men2} é ${men2por}% ${eoq} `);
+        
+    }else if(command === "x1"){
+
+        let msgauthor = message.author;
+        let men = argvs[0];
+        if(!men){
+
+            message.channel.send(`${msgauthor} Marque alguém para tirar um X1!`)
+            return
+        }
+        let lifep1 = 100;
+        let lifep2 = 100;
+        let times = 0;
+
+
+        for(turn = 1; lifep2 || lifep1 <= 0;){
+
+            if(turn = 1){
+
+                if(times === 0){
+                    message.channel.send(`Turno do ${msgauthor}, digite punch para socar o oponente e end para encerrar!`);
+                    console.log("time = 0")
+                    times = 1;
+                }
+                if(message.content.toLowerCase() === 'end' && message.author === msgauthor){
+
+                    message.channel.send(`${msgauthor} encerrou a batalha !`)
+                    break;
+
+                }
+                if(message.content.toLowerCase() === 'punch' && message.author === msgauthor){
+
+
+                    let p1dmg  = Math.floor(Math.random() * 101);
+                    lifep2 = lifep2 - p1dmg
+                    if(lifep2 <= 0){
+
+                        message.channel.send(`${msgauthor} ganhou a batalha !`)
+
+                        break;
+                    }else{
+
+                        times = 0;
+                        turn = 0;
+                        return
+                        
+                    }
+
+
+                }
+
+            }else if(turn = 0){
+
+                if(times = 0){
+
+                    message.channel.send(`Turno do ${men}, digite punch para socar o oponente e end para encerrar!`)
+                    times = 1;
+
+                }
+                if(message.content.toLowerCase() === 'end' && message.author === men){
+
+                    message.channel.send(`${men} encerrou a batalha !`)
+                    break;
+
+                }
+
+                if(message.content.toLowerCase() === 'punch' && message.author === men){
+
+
+                    let p2dmg  = Math.floor(Math.random() * 101);
+                    lifep1 = lifep1 - p2dmg
+                    if(lifep1 <= 0){
+
+                        message.channel.send(`${men} ganhou a batalha !`)
+                        break;
+                    }else{
+
+                        times = 0;
+                        turn = 1;
+                        return
+                    }
+
+
+                }
+
+
+            }
+        }
+
+
+
     }
 
     });
