@@ -178,7 +178,6 @@ client.on('message', message => {
         let lifep2 = 100;
         let times = 0;
 
-
         for(turn = 1; lifep2 || lifep1 <= 0;){
 
             if(turn = 1){
