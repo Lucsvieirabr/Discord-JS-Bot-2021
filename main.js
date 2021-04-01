@@ -7,7 +7,7 @@ const fs = require('fs');
 let listadeparti = [];
 
 const prefix = '?';
-
+let turn = 1;
 let x1 = '';
 let x2 = '';
 
@@ -25,6 +25,7 @@ function getUserFromMention(mention) {
         return client.users.cache.get(mention);
 
     }
+
 }
 
 function formbhask(a, b, c){
@@ -167,93 +168,106 @@ client.on('message', message => {
         
     }else if(command === "x1"){
 
-        let msgauthor = message.author;
+        const msgauthor = message.author;
         let men = argvs[0];
         if(!men){
 
             message.channel.send(`${msgauthor} Marque alguém para tirar um X1!`)
             return
         }
+        let mentionIdd = getUserFromMention(men);
         let lifep1 = 100;
         let lifep2 = 100;
-        let times = 0;
+        let filter = m => m.author.id === message.author.id
+        let filtermen = m => m.author.id === mentionIdd.id
+        function CheckWinner(){
 
-        for(turn = 1; lifep2 || lifep1 <= 0;){
+            if(lifep1 > lifep2 ){
+                
+                message.channel.send(`O jogo se encerrou por tempo, mas, o ${msgauthor} tinha mais vida que o ${men}, logo ele foi considerado como vencedor!`)
+            }else if(lifep2 > lifep1){
 
-            if(turn = 1){
+                message.channel.send(`O jogo se encerrou por tempo, mas, o ${men} tinha mais vida que o ${msgauthor}, logo ele foi considerado como vencedor!`)
 
-                if(times === 0){
-                    message.channel.send(`Turno do ${msgauthor}, digite punch para socar o oponente e end para encerrar!`);
-                    console.log("time = 0")
-                    times = 1;
-                }
-                if(message.content.toLowerCase() === 'end' && message.author === msgauthor){
+            }else{
 
-                    message.channel.send(`${msgauthor} encerrou a batalha !`)
-                    break;
+                message.channel.send(`O jogo se encerrou por tempo, e ambos possuíam a mesma vida, logo, foi considerado um empate !`)
+            }
+        }
+        function P2RoundFightGame(){
 
-                }
-                if(message.content.toLowerCase() === 'punch' && message.author === msgauthor){
-
-
-                    let p1dmg  = Math.floor(Math.random() * 101);
-                    lifep2 = lifep2 - p1dmg
-                    if(lifep2 <= 0){
-
-                        message.channel.send(`${msgauthor} ganhou a batalha !`)
-
-                        break;
-                    }else{
-
-                        times = 0;
-                        turn = 0;
-                        return
-                        
-                    }
-
-
-                }
-
-            }else if(turn = 0){
-
-                if(times = 0){
-
-                    message.channel.send(`Turno do ${men}, digite punch para socar o oponente e end para encerrar!`)
-                    times = 1;
-
-                }
-                if(message.content.toLowerCase() === 'end' && message.author === men){
-
-                    message.channel.send(`${men} encerrou a batalha !`)
-                    break;
-
-                }
-
-                if(message.content.toLowerCase() === 'punch' && message.author === men){
-
-
+            message.channel.send(`${men}, seu turno, digite Punch para socar e End para encerrar a batalha.Você tem 15segundos, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+                message.channel.awaitMessages(filtermen, {
+                  max: 1,
+                  time: 15000,
+                  errors: ['time']
+                })
+                .then(message => {
+                  message = message.first()
+                  if (message.content.toUpperCase() == 'PUNCH' || message.content.toUpperCase() == 'P') {
                     let p2dmg  = Math.floor(Math.random() * 101);
                     lifep1 = lifep1 - p2dmg
                     if(lifep1 <= 0){
-
-                        message.channel.send(`${men} ganhou a batalha !`)
-                        break;
+        
+                        message.channel.send(`A vida do ${msgauthor} chegou a zero! ${men} ganhou a batalha !`)
                     }else{
-
-                        times = 0;
-                        turn = 1;
-                        return
+                        message.channel.send(`${men} deu ${p2dmg} de dano em ${msgauthor}, que agora tem ${lifep1} de vida !`)
+                        P1RoundFightGame();
                     }
-
-
-                }
-
-
-            }
+                  } else if (message.content.toUpperCase() == 'END' || message.content.toUpperCase() == 'END') {
+                    message.channel.send(`Batalha encerrada!`)
+                  } else {
+                    message.channel.send(`Resposta inválida, reniciando o round ! `)
+                    P2RoundFightGame();
+                  }
+                })
+                .catch(collected => {
+                    message.channel.send('O tempo acabou, batalha encerrada');
+                    CheckWinner()
+                    return
+                });
+            })
         }
-
-
-
+        function P1RoundFightGame(){
+        
+            message.channel.send(`${msgauthor},Digite Punch para socar e End para encerrar a batalha.Você tem 15segundos, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+                message.channel.awaitMessages(filter, {
+                  max: 1,
+                  time: 15000,
+                  errors: ['time']
+                })
+                .then(message => {
+                  message = message.first()
+                  if (message.content.toUpperCase() == 'PUNCH' || message.content.toUpperCase() == 'P') {
+                    let p1dmg  = Math.floor(Math.random() * 101);
+                    lifep2 = lifep2 - p1dmg
+                    if(lifep2 <= 0){
+        
+                        message.channel.send(`A vida de ${men} chegou a zero ! ${msgauthor} ganhou a batalha !`)
+                    }else{
+                        message.channel.send(`${msgauthor} deu ${p1dmg} de dano em ${men}, que agora tem ${lifep2} de vida !`)
+                        P2RoundFightGame();
+                        
+                    }
+                  } else if (message.content.toUpperCase() == 'END' || message.content.toUpperCase() == 'END') {
+                    message.channel.send(`Batalha encerrada!`)
+                  } else {
+                    message.channel.send(`Resposta inválida, reniciando o round ! `)
+                    P1RoundFightGame();
+                  }
+                })
+                .catch(collected => {
+                    message.channel.send('O tempo acabou, batalha encerrada');
+                    CheckWinner()
+                    return
+                });
+            })
+        
+        }
+        P1RoundFightGame();
+        
+    
+    
     }
 
     });
