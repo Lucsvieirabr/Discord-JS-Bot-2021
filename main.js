@@ -178,25 +178,13 @@ client.on('message', message => {
         let mentionIdd = getUserFromMention(men);
         let lifep1 = 100;
         let lifep2 = 100;
+        let round = 1;
         let filter = m => m.author.id === message.author.id
         let filtermen = m => m.author.id === mentionIdd.id
-        function CheckWinner(){
-
-            if(lifep1 > lifep2 ){
-                
-                message.channel.send(`O jogo se encerrou por tempo, mas, o ${msgauthor} tinha mais vida que o ${men}, logo ele foi considerado como vencedor!`)
-            }else if(lifep2 > lifep1){
-
-                message.channel.send(`O jogo se encerrou por tempo, mas, o ${men} tinha mais vida que o ${msgauthor}, logo ele foi considerado como vencedor!`)
-
-            }else{
-
-                message.channel.send(`O jogo se encerrou por tempo, e ambos possuíam a mesma vida, logo, foi considerado um empate !`)
-            }
-        }
         function P2RoundFightGame(){
 
-            message.channel.send(`${men}, seu turno, digite Punch para socar e End para encerrar a batalha.Você tem 15segundos, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+            round = 2;
+            message.channel.send(`**${men}**, seu turno, digite **Punch** para socar e **End** para encerrar a batalha. \n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
                 message.channel.awaitMessages(filtermen, {
                   max: 1,
                   time: 15000,
@@ -209,9 +197,9 @@ client.on('message', message => {
                     lifep1 = lifep1 - p2dmg
                     if(lifep1 <= 0){
         
-                        message.channel.send(`A vida do ${msgauthor} chegou a zero! ${men} ganhou a batalha !`)
+                        message.channel.send(`A vida do **${msgauthor}** chegou a zero! **${men}** ganhou a batalha !`)
                     }else{
-                        message.channel.send(`${men} deu ${p2dmg} de dano em ${msgauthor}, que agora tem ${lifep1} de vida !`)
+                        message.channel.send(`**${men}** deu **${p2dmg}** de dano em **${msgauthor}**, que agora tem **${lifep1}** de vida !`)
                         P1RoundFightGame();
                     }
                   } else if (message.content.toUpperCase() == 'END' || message.content.toUpperCase() == 'END') {
@@ -222,15 +210,14 @@ client.on('message', message => {
                   }
                 })
                 .catch(collected => {
-                    message.channel.send('O tempo acabou, batalha encerrada');
-                    CheckWinner()
+                    message.channel.send(`O tempo acabou, **${men}** arregou ! Logo o **${msgauthor}** é o vitorioso !`);
                     return
                 });
             })
         }
         function P1RoundFightGame(){
         
-            message.channel.send(`${msgauthor},Digite Punch para socar e End para encerrar a batalha.Você tem 15segundos, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+            message.channel.send(`**${msgauthor}**,Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
                 message.channel.awaitMessages(filter, {
                   max: 1,
                   time: 15000,
@@ -243,9 +230,9 @@ client.on('message', message => {
                     lifep2 = lifep2 - p1dmg
                     if(lifep2 <= 0){
         
-                        message.channel.send(`A vida de ${men} chegou a zero ! ${msgauthor} ganhou a batalha !`)
+                        message.channel.send(`A vida de **${men}** chegou a zero ! **${msgauthor}** ganhou a batalha !`)
                     }else{
-                        message.channel.send(`${msgauthor} deu ${p1dmg} de dano em ${men}, que agora tem ${lifep2} de vida !`)
+                        message.channel.send(`**${msgauthor}** deu **${p1dmg}** de dano em **${men}**, que agora tem **${lifep2}** de vida !`)
                         P2RoundFightGame();
                         
                     }
@@ -257,8 +244,7 @@ client.on('message', message => {
                   }
                 })
                 .catch(collected => {
-                    message.channel.send('O tempo acabou, batalha encerrada');
-                    CheckWinner()
+                    message.channel.send(`O tempo acabou, **${msgauthor}** arregou ! Logo o **${men}** é o vitorioso !`);
                     return
                 });
             })
