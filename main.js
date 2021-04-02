@@ -61,6 +61,7 @@ client.on('message', message => {
             .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
             .addField('?slap', value = 'De aquele tapa no mongol que ta enchendo o saco,use ?slap e o nome da pessoa, ou marque ela.', inline = false)
             .addField('?x1', value = 'Chame seu amigo para uma trocação franca sem perder a amizade! Use ?x1 @pessoa.', inline = false)
+            .addField('?guess', value = 'Tente acertar um número de 1 a 20 que eu escolhi !!', inline = false)
             .setColor('#00FBFC')
             .setImage(botimglink);
 
@@ -290,6 +291,58 @@ client.on('message', message => {
             message.channel.bulkDelete(1, true); 
         }, 10000);
             
+    }else if(command === 'guess'){
+        let triesreman = 4;
+        let randomnumber = Math.floor(Math.random() * 21);
+        let filter = m => m.author.id === message.author.id
+        console.log(randomnumber);
+
+        function AnotherChance(){
+
+            if(triesreman != 0){
+                message.channel.send(`**${message.author.username}**, Você tem **${triesreman}** para acertar um número de 1 a 20 que eu escolhi !`).then(() => {
+                    message.channel.awaitMessages(filter, {
+                        max: 1,
+                        time: 30000,
+                        errors: ['time']
+                      })
+                      .then(message => {
+                        message = message.first()
+                        if (message.content > 20  ){
+    
+                          triesreman --
+                          message.channel.send(`Número maior que 20, digite um número de 1 a 20. `)
+                          AnotherChance();
+                          return
+
+    
+                        }
+                        if ( message.content != randomnumber){
+    
+    
+                            triesreman --
+                            message.channel.send(`Resposta errada ou inválida, tente novamente ! `)
+                            AnotherChance();
+
+
+                        }else {
+
+                            message.channel.send(`${message.author}Parábens você acertou, meu número era ${randomnumber}!`)                          
+                        }
+              
+                      })
+                      .catch(collected => {
+                          message.channel.send('Durante 30s você não digitou nada, comando encerrado');
+                      });
+                  })
+            }else{
+
+                message.channel.send(`Terminaram suas chances, você errou, o número que eu escolhi era ${randomnumber}`)
+            }
+           
+        }
+        AnotherChance();
+
     }
 
     
