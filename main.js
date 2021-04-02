@@ -60,6 +60,7 @@ client.on('message', message => {
             .addField('?cafune', value = 'Faça um cafuné em alguém, use ?cafune @pessoa.', inline = false)
             .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
             .addField('?slap', value = 'De aquele tapa no mongol que ta enchendo o saco,use ?slap e o nome da pessoa, ou marque ela.', inline = false)
+            .addField('?x1', value = 'Chame seu amigo para uma trocação franca sem perder a amizade! Use ?x1 @pessoa.', inline = false)
             .setColor('#00FBFC')
             .setImage(botimglink);
 
@@ -184,7 +185,7 @@ client.on('message', message => {
         function P2RoundFightGame(){
 
             round = 2;
-            message.channel.send(`**${men}**, seu turno, digite **Punch** para socar e **End** para encerrar a batalha. \n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+            message.channel.send(`${men}, seu turno, digite Punch para socar e End para encerrar a batalha. \n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
                 message.channel.awaitMessages(filtermen, {
                   max: 1,
                   time: 15000,
@@ -196,10 +197,11 @@ client.on('message', message => {
                     let p2dmg  = Math.floor(Math.random() * 101);
                     lifep1 = lifep1 - p2dmg
                     if(lifep1 <= 0){
-        
-                        message.channel.send(`A vida do **${msgauthor}** chegou a zero! **${men}** ganhou a batalha !`)
+
+                        message.channel.send(`${men} deu **${p2dmg}** de dano em ${msgauthor}, que agora tem **0** de vida !`)
+                        message.channel.send(`A vida do ${msgauthor} chegou a zero! ${men} **ganhou a batalha !**`)
                     }else{
-                        message.channel.send(`**${men}** deu **${p2dmg}** de dano em **${msgauthor}**, que agora tem **${lifep1}** de vida !`)
+                        message.channel.send(`${men} deu **${p2dmg}** de dano em ${msgauthor}, que agora tem **${lifep1}** de vida !`)
                         P1RoundFightGame();
                     }
                   } else if (message.content.toUpperCase() == 'END' || message.content.toUpperCase() == 'END') {
@@ -210,14 +212,14 @@ client.on('message', message => {
                   }
                 })
                 .catch(collected => {
-                    message.channel.send(`O tempo acabou, **${men}** arregou ! Logo o **${msgauthor}** é o vitorioso !`);
+                    message.channel.send(`O tempo acabou, ${men} arregou ! Logo o ${msgauthor} **é o vitorioso !**`);
                     return
                 });
             })
         }
         function P1RoundFightGame(){
         
-            message.channel.send(`**${msgauthor}**,Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+            message.channel.send(`${msgauthor},Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
                 message.channel.awaitMessages(filter, {
                   max: 1,
                   time: 15000,
@@ -229,10 +231,11 @@ client.on('message', message => {
                     let p1dmg  = Math.floor(Math.random() * 101);
                     lifep2 = lifep2 - p1dmg
                     if(lifep2 <= 0){
-        
-                        message.channel.send(`A vida de **${men}** chegou a zero ! **${msgauthor}** ganhou a batalha !`)
+                        
+                        message.channel.send(`${msgauthor} deu **${p1dmg}** de dano em ${men}, que agora tem **0** de vida !`)
+                        message.channel.send(`A vida de ${men} chegou a zero ! ${msgauthor} **ganhou a batalha !**`)
                     }else{
-                        message.channel.send(`**${msgauthor}** deu **${p1dmg}** de dano em **${men}**, que agora tem **${lifep2}** de vida !`)
+                        message.channel.send(`${msgauthor} deu **${p1dmg}** de dano em ${men}, que agora tem **${lifep2}** de vida !`)
                         P2RoundFightGame();
                         
                     }
@@ -244,7 +247,7 @@ client.on('message', message => {
                   }
                 })
                 .catch(collected => {
-                    message.channel.send(`O tempo acabou, **${msgauthor}** arregou ! Logo o **${men}** é o vitorioso !`);
+                    message.channel.send(`O tempo acabou, ${msgauthor} arregou ! Logo o **${men} é o vitorioso !**`);
                     return
                 });
             })
@@ -254,7 +257,42 @@ client.on('message', message => {
         
     
     
+    }else if(command === 'clear'){
+
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+            return message.reply("**Você não pode deletar mensagens**....").then(m => m.delete(5000));
+        }
+
+        // Check if args[0] is a number
+        if (isNaN(argvs[0]) || parseInt(argvs[0]) <= 0) {
+            return message.reply("Opa isso não é um número?... Eu não posso deletar 0 mensagens btw...").then(m => m.delete(5000));
+        }
+
+        // Maybe the bot can't delete messages
+        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
+            return message.reply("Desculpa, o ADM não me deu esses poderes!").then(m => m.delete(5000));
+        }
+
+        let deleteAmount;
+
+        if (parseInt(argvs[0]) > 100) {
+            deleteAmount = 100;
+        } else {
+            deleteAmount = parseInt(argvs[0]);
+        }
+
+        message.channel.bulkDelete(deleteAmount, true)
+            .then(deleted => message.channel.send(` **${deleted.size} Mensagens Deletadas **.`))
+            .catch(err => message.reply(`Alguma coisa deu de errado... ${err}`));
+
+        setTimeout(function(){ 
+
+            message.channel.bulkDelete(1, true); 
+        }, 10000);
+            
     }
+
+    
 
     });
 
