@@ -1,3 +1,4 @@
+const { constants } = require('buffer');
 const { time } = require('console');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -5,11 +6,16 @@ const client = new Discord.Client();
 const fs = require('fs');
 
 let listadeparti = [];
+let msggiveID = "null";
+let msgHandManID = "null";
+const randomWordsRequire = require('random-words');
 
 const prefix = '?';
 let turn = 1;
 let x1 = '';
 let x2 = '';
+let LoopTimesHand = 0;
+
 
 function getUserFromMention(mention) {
     if (!mention) return;
@@ -143,7 +149,6 @@ client.on('message', message => {
 
 
     }else if(command === "giveaway"){
-
         let giveimg = 'https://i.pinimg.com/originals/41/03/49/41034992711f518f6ff546df87f7ebb3.gif';
         let intsorteado = argvs[0];
         let tempo = argvs[1];
@@ -154,8 +159,9 @@ client.on('message', message => {
         .setDescription(`O Adm tá on ! Reajam ( :tada: ) para participar !! `)
         .setColor('#CB06F2')
         .setImage(giveimg);
-        message.channel.send(giveawayEmbed).then(sentMessage => {
+          message.channel.send(giveawayEmbed).then(sentMessage => {
 
+            msggiveID = sentMessage.id;
             sentMessage.react('🎉');
           });
           
@@ -295,7 +301,6 @@ client.on('message', message => {
         let triesreman = 4;
         let randomnumber = Math.floor(Math.random() * 21);
         let filter = m => m.author.id === message.author.id
-        console.log(randomnumber);
 
         function AnotherChance(){
 
@@ -343,14 +348,117 @@ client.on('message', message => {
         }
         AnotherChance();
 
+    }else if(command === 'forca'){
+
+        let randomWordsForHandMAn = randomWordsRequire();
+        let TriesRemanHd = 5;
+        let LettersNum = randomWordsForHandMAn.length
+        let WordToSecret = "";
+        console.log(randomWordsForHandMAn);
+        function ReplaceThelettersHM(){
+            if(LettersNum > 0){
+        
+                LettersNum --;
+                WordToSecret += " -";
+                ReplaceThelettersHM();
+            }
+        }
+        ReplaceThelettersHM();
+        let msgauthorId = message.author.id;
+        let filter = m => m.author.id === msgauthorId;
+        let HandManEmbed = new Discord.MessageEmbed()
+        .setTitle(`Tente acertar a palavra em inglês que eu escolhi! **5** letras erradas te levaram a derrota !! Digite a letra escolhida no chat !`)
+        .setDescription(`Palavra : ${WordToSecret}`)
+        .setColor('#CB06F2')
+        message.channel.send(HandManEmbed).then(sentMessage => {
+
+            msgHandManID = sentMessage.id;
+
+          })
+          function CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace){
+
+            if (Number.isNaN(+Letter)){
+
+                if(Letter.length > 1){
+
+                    TriesRemanHd --
+                    message.channel.send(`${msgauthorId}, Você digitou múltiplas letras, menos **1** chance !! Você possui **${TriesRemanHd}** chances sobrando !`)
+    
+                }else if(strlen < 0){
+    
+                    message.channel.send('Sua letra foi checada, e coloca nos locais correto, se estivesse correto !!')
+                    LoopTimesHand = 0;
+                    Play()
+    
+                }else if(Letter === str.charAt(strlen)){
+    
+                    LoctoReplace.replaceAt(strlen, Letter);
+                    strlen--;
+                    CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
+    
+    
+                }
+
+            }else{
+
+                TriesRemanHd --
+                message.channel.send(`${msgauthorId}, Você digitou um número, menos **1** chance !! Você possui **${TriesRemanHd}** chances sobrando !`)
+                LoopTimesHand = 1;
+                Play();
+            }
+        
+        }
+        function AwaitLetter(){
+
+            message.channel.send(`Esperando sua letra...`).then(() => {
+            message.channel.awaitMessages(filter, {
+                max: 1,
+                time: 30000,
+                errors: ['time']
+              })
+              .then(message => {
+
+                if(WordToSecret === randomWordsForHandMAn){
+
+                    message.channel.send(`${message.author}, parabéns, você acertou a palavra !!! `)
+                }
+                if(WordToSecret != randomWordsForHandMAn){
+
+                    CheckifHasTheLetterInString(randomWordsForHandMAn, LettersNum, message.content, WordToSecret);
+
+                }
+
+
+              })
+              .catch(collected => {
+                  message.channel.send('O tempo acabou, e você não mandou nenhuma mensagem ! Fim de jogo !');
+              });
+            })
+
+        }
+        function Play(){
+            
+            if(TriesRemanHd > 0){
+                AwaitLetter()
+            }else{
+                message.channel.send(`Você perdeu, a palavra correta era **${randomWordsForHandMAn}**, mais sorte na próxima vez !`);
+    
+            }
+        }
+        Play();
+       
+        
+          
     }
 
-    
 
     });
 
     client.on('messageReactionAdd', async (reaction, user) => {
         // When we receive a reaction we check if the reaction is partial or not
+        
+        if(msggiveID != 'null'){
+
         let userMarq = `@${user.username}#${user.discriminator}`;
         if (reaction.emoji.name === '🎉'){
             if (reaction.partial) {
@@ -369,11 +477,10 @@ client.on('message', message => {
 
                 listadeparti.push(userMarq);
                 console.log(listadeparti);
+                
             }
         }
-        
-        
-
+        }
     });
 
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
