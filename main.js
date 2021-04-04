@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const fs = require('fs');
+const { exit } = require('process');
 
 let listadeparti = [];
 let msggiveID = "null";
@@ -383,14 +384,21 @@ client.on('message', message => {
 
             if (Number.isNaN(+Letter)){
     
-
+                
                 if(Letter.length > 1){
 
                     TriesRemanHd --
-                    message.channel.send(`${author}, Você digitou múltiplas letras, menos **1** chance !! \n Você possui **${TriesRemanHd}** chances sobrando !`)
+                    if(TriesRemanHd > 0){
+
+                        message.channel.send(`${author}, Você digitou múltiplas letras, menos **1** chance !! \n Você possui **${TriesRemanHd}** chances sobrando !`)
+                        Play();
+
+                    }else{
+                        message.channel.send(`${author}, Você digitou múltiplas letras, e suas chances acabar !! GAME OVER !!`)
+
+                    }
     
-                }
-                if(strlen < 0){
+                }else if(strlen < 0){
     
                     message.channel.send('Sua letra foi checada, e coloca nos locais correto, se estivesse correto !!')
                     LoopTimesHand = 0;
@@ -404,15 +412,19 @@ client.on('message', message => {
                     Play()
     
                 }else if(Letter === str.charAt(strlen)){
-    
+                    
                     LoctoReplace.replaceAt(strlen, Letter);
                     strlen--;
-                    console.log('passei aqui 1')
                     CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
     
     
+                }else{
+
+                    strlen--;
+                    CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
                 }
 
+                
             }else{
 
                 TriesRemanHd --
@@ -439,6 +451,7 @@ client.on('message', message => {
                 }else{
 
                     CheckifHasTheLetterInString(randomWordsForHandMAn, LetterinPosition, message.content, WordToSecret);
+                    return
 
                 }
 
