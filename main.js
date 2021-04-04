@@ -298,7 +298,7 @@ client.on('message', message => {
         }, 10000);
             
     }else if(command === 'guess'){
-        let triesreman = 4;
+        let triesreman = 3;
         let randomnumber = Math.floor(Math.random() * 21);
         let filter = m => m.author.id === message.author.id
 
@@ -332,7 +332,7 @@ client.on('message', message => {
 
                         }else {
 
-                            message.channel.send(`${message.author}Parábens você acertou, meu número era ${randomnumber}!`)                          
+                            message.channel.send(`${message.author}, Parábens você acertou, meu número era ${randomnumber}!`)                          
                         }
               
                       })
@@ -350,6 +350,7 @@ client.on('message', message => {
 
     }else if(command === 'forca'){
 
+        let letterUssed = "";
         let randomWordsForHandMAn = randomWordsRequire();
         let TriesRemanHd = 5;
         let LettersNum = randomWordsForHandMAn.length
@@ -364,8 +365,11 @@ client.on('message', message => {
             }
         }
         ReplaceThelettersHM();
+        let author = message.author;
         let msgauthorId = message.author.id;
         let filter = m => m.author.id === msgauthorId;
+        LettersNum = randomWordsForHandMAn.length
+        let LetterinPosition = randomWordsForHandMAn.length - 1;
         let HandManEmbed = new Discord.MessageEmbed()
         .setTitle(`Tente acertar a palavra em inglês que eu escolhi! **5** letras erradas te levaram a derrota !! Digite a letra escolhida no chat !`)
         .setDescription(`Palavra : ${WordToSecret}`)
@@ -378,22 +382,32 @@ client.on('message', message => {
           function CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace){
 
             if (Number.isNaN(+Letter)){
+    
 
                 if(Letter.length > 1){
 
                     TriesRemanHd --
-                    message.channel.send(`${msgauthorId}, Você digitou múltiplas letras, menos **1** chance !! Você possui **${TriesRemanHd}** chances sobrando !`)
+                    message.channel.send(`${author}, Você digitou múltiplas letras, menos **1** chance !! \n Você possui **${TriesRemanHd}** chances sobrando !`)
     
-                }else if(strlen < 0){
+                }
+                if(strlen < 0){
     
                     message.channel.send('Sua letra foi checada, e coloca nos locais correto, se estivesse correto !!')
                     LoopTimesHand = 0;
+                    letterUssed += `**${Letter}**,  `
+                    HandManEmbed = new Discord.MessageEmbed()
+                         .setTitle(`Tente acertar a palavra em inglês que eu escolhi! **5** letras erradas te levaram a derrota !! Digite a letra escolhida no chat !`)
+                         .setDescription(`Palavra : ${WordToSecret}`)
+                         .addField('Letras Usadas: ', value = `${letterUssed}`, inline = false)
+                         .setColor('#CB06F2')
+                    msgHandManID.edit(HandManEmbed);
                     Play()
     
                 }else if(Letter === str.charAt(strlen)){
     
                     LoctoReplace.replaceAt(strlen, Letter);
                     strlen--;
+                    console.log('passei aqui 1')
                     CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
     
     
@@ -418,16 +432,15 @@ client.on('message', message => {
               })
               .then(message => {
 
+                message = message.first()
                 if(WordToSecret === randomWordsForHandMAn){
 
                     message.channel.send(`${message.author}, parabéns, você acertou a palavra !!! `)
+                }else{
+
+                    CheckifHasTheLetterInString(randomWordsForHandMAn, LetterinPosition, message.content, WordToSecret);
+
                 }
-                if(WordToSecret != randomWordsForHandMAn){
-
-                    CheckifHasTheLetterInString(randomWordsForHandMAn, LettersNum, message.content, WordToSecret);
-
-                }
-
 
               })
               .catch(collected => {
