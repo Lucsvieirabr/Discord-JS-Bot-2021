@@ -1,5 +1,5 @@
 const { constants } = require('buffer');
-const { time } = require('console');
+const { time, Console } = require('console');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
@@ -68,7 +68,7 @@ client.on('message', message => {
             .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
             .addField('?slap', value = 'De aquele tapa no mongol que ta enchendo o saco,use ?slap e o nome da pessoa, ou marque ela.', inline = false)
             .addField('?x1', value = 'Chame seu amigo para uma trocação franca sem perder a amizade! Use ?x1 @pessoa.', inline = false)
-            .addField('?guess', value = 'Tente acertar um número de 1 a 20 que eu escolhi !!', inline = false)
+            .addField('?guess', value = 'Tente acertar um número de 0 a 20 que eu escolhi !!', inline = false)
             .setColor('#00FBFC')
             .setImage(botimglink);
 
@@ -173,7 +173,15 @@ client.on('message', message => {
         let eoq = argvs[2];
         let men1por = Math.floor(Math.random() * 101);
         let men2por = Math.floor(Math.random() * 101);
-        message.channel.send(`O  ${men1} é ${men1por}% ${eoq}, e o ${men2} é ${men2por}% ${eoq} `);
+        if(!getUserFromMention(men1) || !getUserFromMention(men2)){
+
+            message.channel.send('**Marque duas pessoas corretamente ! **')
+        
+        }else if(!eoq){
+            message.channel.send('**Diga algo para os dois competirem !! \nPor exemplo: ?emais @pessoa @pessoa lindo **')
+        }else{
+            message.channel.send(`O  ${men1} é ${men1por}% ${eoq}, e o ${men2} é ${men2por}% ${eoq} `);
+        }
         
     }else if(command === "x1"){
 
@@ -268,7 +276,7 @@ client.on('message', message => {
     }else if(command === 'clear'){
 
         if (!message.member.hasPermission("MANAGE_MESSAGES")) {
-            return message.reply("**Você não pode deletar mensagens**....").then(m => m.delete(5000));
+            return message.reply("**Você não pode deletar mensagens**....")
         }
 
         // Check if args[0] is a number
@@ -306,7 +314,7 @@ client.on('message', message => {
         function AnotherChance(){
 
             if(triesreman != 0){
-                message.channel.send(`**${message.author.username}**, Você tem **${triesreman}** para acertar um número de 1 a 20 que eu escolhi !`).then(() => {
+                message.channel.send(`**${message.author.username}**, Você tem **${triesreman}** para acertar um número de 0 a 20 que eu escolhi !`).then(() => {
                     message.channel.awaitMessages(filter, {
                         max: 1,
                         time: 30000,
@@ -366,9 +374,9 @@ client.on('message', message => {
             }
         }
         ReplaceThelettersHM();
+        let LetterCorrects = 0;
         let author = message.author;
-        let msgauthorId = message.author.id;
-        let filter = m => m.author.id === msgauthorId;
+        const msgauthorId = message.author.id;
         LettersNum = randomWordsForHandMAn.length
         let LetterinPosition = randomWordsForHandMAn.length - 1;
         let HandManEmbed = new Discord.MessageEmbed()
@@ -394,25 +402,38 @@ client.on('message', message => {
                         Play();
 
                     }else{
-                        message.channel.send(`${author}, Você digitou múltiplas letras, e suas chances acabar !! GAME OVER !!`)
+                        message.channel.send(`${author}, Você digitou múltiplas letras, e suas chances acabaram !! GAME OVER !!`)
+                        return
 
                     }
     
-                }else if(strlen < 0){
-    
-                    message.channel.send('Sua letra foi checada, e coloca nos locais correto, se estivesse correto !!')
+                }else if(strlen <= -1){
+
+                    
+                    if(LetterCorrects === 0){
+
+                        TriesRemanHd --;
+                        message.channel.send(`Sua letra foi checada, e a palavra não possuia essa letra !!! **${TriesRemanHd}** Chances sobrando !!!`)
+
+                    }else{
+
+                        message.channel.send(`Sua letra foi checada, e colocado nos lugares correto !!!`)
+
+                    }
+                    LetterCorrects = 0;
                     LoopTimesHand = 0;
                     letterUssed += `**${Letter}**,  `
                     HandManEmbed = new Discord.MessageEmbed()
                          .setTitle(`Tente acertar a palavra em inglês que eu escolhi! **5** letras erradas te levaram a derrota !! Digite a letra escolhida no chat !`)
-                         .setDescription(`Palavra : ${WordToSecret}`)
+                         .setDescription(`Palavra : ${LoctoReplace}`)
                          .addField('Letras Usadas: ', value = `${letterUssed}`, inline = false)
                          .setColor('#CB06F2')
-                    msgHandManID.edit(HandManEmbed);
+                    message.channel.send(HandManEmbed);
                     Play()
     
-                }else if(Letter === str.charAt(strlen)){
+                }else if(Letter.toUpperCase() === str.charAt(strlen).toUpperCase()){
                     
+                    LetterCorrects ++;
                     LoctoReplace.replaceAt(strlen, Letter);
                     strlen--;
                     CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
@@ -436,24 +457,18 @@ client.on('message', message => {
         }
         function AwaitLetter(){
 
+            let filter = m => m.author.id === msgauthorId;
             message.channel.send(`Esperando sua letra...`).then(() => {
             message.channel.awaitMessages(filter, {
                 max: 1,
-                time: 30000,
+                time: 15000,
                 errors: ['time']
               })
               .then(message => {
 
                 message = message.first()
-                if(WordToSecret === randomWordsForHandMAn){
-
-                    message.channel.send(`${message.author}, parabéns, você acertou a palavra !!! `)
-                }else{
-
-                    CheckifHasTheLetterInString(randomWordsForHandMAn, LetterinPosition, message.content, WordToSecret);
-                    return
-
-                }
+                CheckifHasTheLetterInString(randomWordsForHandMAn, LetterinPosition, message.content, WordToSecret);
+                return;
 
               })
               .catch(collected => {
@@ -464,17 +479,57 @@ client.on('message', message => {
         }
         function Play(){
             
-            if(TriesRemanHd > 0){
+            if(WordToSecret === randomWordsForHandMAn){
+                message.channel.send(`${message.author}, parabéns, você acertou a palavra !!! `)
+            }else if(TriesRemanHd > 0){
                 AwaitLetter()
             }else{
                 message.channel.send(`Você perdeu, a palavra correta era **${randomWordsForHandMAn}**, mais sorte na próxima vez !`);
-    
             }
+
+            
         }
         Play();
        
         
           
+    }else if(command === 'mute'){
+
+        //Vendo se o membro tem permissão 
+        if (!message.member.hasPermission("ADMINISTRATOR")) {
+            return message.reply("**Você não pode mutar pessoas !! \nApenas os admiros possuem tal poder !!**....")
+        }
+
+        //Vendo se o Autor do comando marcou alguém corretamente
+        if(!getUserFromMention(argvs[0])){
+
+            return message.reply(`${message.author}**, marque alguém corretamente !!`)
+        }
+
+        let role = message.guild.roles.cache.find(role => role.name === "MUTED");
+        let member = message.mentions.members.first();
+        member.roles.add(role).catch(console.error);
+        message.channel.send(`${member}** foi mutado com sucesso !! **`);
+
+
+    }else if(command === 'desmute'){
+
+         //Vendo se o membro tem permissão 
+         if (!message.member.hasPermission("ADMINISTRATOR")) {
+            return message.reply("**Você não pode desmutar pessoas!! \nApenas os admiros possuem tal poder !!**....")
+        }
+
+        //Vendo se o Autor do comando marcou alguém corretamente
+        if(!getUserFromMention(argvs[0])){
+
+            return message.reply(`${message.author}**, marque alguém corretamente !!`)
+        }
+
+        let role = message.guild.roles.cache.find(role => role.name === "MUTED");
+        let member = message.mentions.members.first();
+        member.roles.remove(role).catch(console.error);
+        message.channel.send(`${member}** foi desmutado com sucesso !! **`);
+
     }
 
 
