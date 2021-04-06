@@ -13,6 +13,8 @@ const X1 = require('./comandos/x1.js')
 const Clear = require('./comandos/clear.js')
 const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
+const Meme = require('./comandos/meme.js')
+
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -64,8 +66,11 @@ client.on('message', message => {
 
         Forca(message);
 
-    } 
+    }else if(command === 'meme'){
+
+        Meme(message, argvs)
+
+    }
 
 });
-
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
