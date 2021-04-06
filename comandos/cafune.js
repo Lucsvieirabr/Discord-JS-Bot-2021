@@ -1,6 +1,12 @@
 const Discord = require('discord.js');
 
 function doCafune(author, mencion) {
+  
+  if (typeof(mencion) != 'object' ) {
+
+    return ("**Mencione uma pessoa corretamente, seu cabaço!**");
+
+}
   let cafune = ['https://media.giphy.com/media/ARSp9T7wwxNcs/giphy.gif', 'https://media.giphy.com/media/5tmRHwTlHAA9WkVxTU/giphy.gif',
     'https://media.giphy.com/media/4HP0ddZnNVvKU/giphy.gif', 'https://media.giphy.com/media/109ltuoSQT212w/giphy.gif',
     'https://media.giphy.com/media/xVgGouGtc21H2/giphy.gif', 'https://media.giphy.com/media/ye7OTQgwmVuVy/giphy.gif',

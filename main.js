@@ -1,54 +1,19 @@
-const { constants } = require('buffer');
-const { time, Console } = require('console');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const fs = require('fs');
-const { exit } = require('process');
-
-let listadeparti = [];
-let msggiveID = "null";
-let msgHandManID = "null";
-const randomWordsRequire = require('random-words');
-
 const prefix = '?';
-let turn = 1;
-let x1 = '';
-let x2 = '';
-let LoopTimesHand = 0;
 
 const Cafune = require('./comandos/cafune.js')
-
-
-function getUserFromMention(mention) {
-    if (!mention) return;
-
-    if (mention.startsWith('<@') && mention.endsWith('>')) {
-        mention = mention.slice(2, -1);
-
-        if (mention.startsWith('!')) {
-            mention = mention.slice(1);
-        }
-
-
-        return client.users.cache.get(mention);
-
-    }
-
-}
-
-function formbhask(a, b, c) {
-
-    var delta = (b * b) - 4 * a * c;
-
-    let x1up = -b + (Math.sqrt(delta));
-    x1 = parseFloat(x1up / (2 * a));
-
-    let x2up = -b - (Math.sqrt(delta));
-    x2 = parseFloat(x2up / (2 * a));
-
-}
-
+const Comandos = require('./comandos/comandos.js')
+const Info = require('./comandos/info.js')
+const Bhask = require('./comandos/bhask.js')
+const Slap = require('./comandos/slap.js')
+const Emais = require('./comandos/emais.js')
+const X1 = require('./comandos/x1.js')
+const Clear = require('./comandos/clear.js')
+const Guess = require('./comandos/guess.js')
+const Forca = require('./comandos/forca.js')
+const Mute = require('./comandos/mute.js')
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -61,484 +26,51 @@ client.on('message', message => {
     const command = argvs.shift().toLocaleLowerCase();
 
     if (command === 'comandos') {
-        const botimglink = 'https://static.wikia.nocookie.net/clubpenguin/images/e/e5/Tusk_Evil.png/revision/latest/scale-to-width-down/856?cb=20130523222135';
-        const Comandsembed = new Discord.MessageEmbed()
-            .setTitle(`Olá , está é minha lista de comandos:`)
-            .addField('?info', value = 'Veja as informações de uma pessoa e seu imagem de perfil, use ?info @pessoa.', inline = false)
-            .addField('?bhask', value = 'Calcule uma equação de segundo grau, use ?bhask a b c.', inline = false)
-            .addField('?cafune', value = 'Faça um cafuné em alguém, use ?cafune @pessoa.', inline = false)
-            .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
-            .addField('?slap', value = 'De aquele tapa no mongol que ta enchendo o saco,use ?slap e o nome da pessoa, ou marque ela.', inline = false)
-            .addField('?x1', value = 'Chame seu amigo para uma trocação franca sem perder a amizade! Use ?x1 @pessoa.', inline = false)
-            .addField('?guess', value = 'Tente acertar um número de 0 a 20 que eu escolhi !!', inline = false)
-            .setColor('#00FBFC')
-            .setImage(botimglink);
-
-        message.channel.send(Comandsembed);
+       
+        message.channel.send(Comandos());
 
     } else if (command === 'info') {
 
-        var mencion = message.content.slice(6);
-        if (!mencion) {
-
-            return message.channel.send("Mencione uma pessoa corretamente, seu cabaço!");
-
-        }
-        var mentionid = getUserFromMention(mencion);
-        const userinfoembed = new Discord.MessageEmbed()
-            .setTitle(`Informações de ${mentionid.username}`)
-            .addField('Username', value = `${mentionid.username + '#' + mentionid.discriminator}`, inline = true)
-            .addField('ID', value = `${mentionid.id}`, inline = true)
-            .setColor('#00FBFC')
-            .setImage(mentionid.displayAvatarURL({ dynamic: true }));
-
-        message.channel.send(userinfoembed);
-
-
+        message.channel.send(Info(message.mentions.users.first()));
 
     } else if (command === 'bhask') {
 
-        if (!argvs.length) {
-            return message.channel.send(`Você não colocou todas as três variáveis necessárias, ${message.author}!`);
-        }
-
-        formbhask(argvs[0], argvs[1], argvs[2]);
-        message.channel.send(`Considerando A = ${argvs[0]} , B = ${argvs[1]}, C = ${argvs[2]} ... X1 = ${x1} e X2 = ${x2}.`)
+        message.channel.send(Bhask(argvs[0], argvs[1], argvs[2], argvs.length, message.author));
 
     } else if (command === 'cafune') {
+
         message.channel.send(Cafune(message.author, argvs[0]));
+
     } else if (command === 'slap') {
 
-        var slaplist = ['https://media1.tenor.com/images/b6d8a83eb652a30b95e87cf96a21e007/tenor.gif?itemid=10426943', 'https://i.pinimg.com/originals/96/8c/b1/968cb1f9eaa12dde1d6fdf2f6ee296ed.gif', 'https://media1.tenor.com/images/2915aef3da681c2361ee9c4dcc9dbfa4/tenor.gif?itemid=14694312', 'https://i.imgur.com/fm49srQ.gif', 'https://image.myanimelist.net/ui/BQM6jEZ-UJLgGUuvrNkYUFk2Ae92E1tAeAfjk_pGLpKnHfWiikue5-m1fMe8_1TjRXlLKNwbrQTs1EfUN5ol3A', 'https://i.kym-cdn.com/photos/images/original/001/040/951/73e.gif', 'https://i.pinimg.com/originals/65/57/f6/6557f684d6ffcd3cd4558f695c6d8956.gif', 'https://i.gifer.com/1Vbb.gif', 'https://media1.tenor.com/images/a6c2f17d9209f8f536b6b4bfbfb84686/tenor.gif?itemid=5376964', 'https://media3.giphy.com/media/lSDqu7IbMqMiQvCjjN/giphy.gif', 'https://media1.tenor.com/images/85722c3e51d390e11a0493696f32fb69/tenor.gif?itemid=5463215', 'https://i.kym-cdn.com/photos/images/newsfeed/000/940/326/086.gif', 'https://media1.tenor.com/images/9ea4fb41d066737c0e3f2d626c13f230/tenor.gif?itemid=7355956'];
-        var randotapnun = parseFloat(Math.floor(Math.random() * slaplist.length));
-        var tapalink = slaplist[randotapnun];
-        var randtextlist = ['deu um tapão em ', 'desferiu um poderoso tapa em', 'deu uma bilada em', 'espacou o sujeito, press f, para consolar nosso querido', 'surrou'];
-        var randotextnum = parseFloat(Math.floor(Math.random() * randtextlist.length));
-        var randomtext = randtextlist[randotextnum];
-        const mencion = message.content.slice(5);
-        var slapEmbed = new Discord.MessageEmbed()
-            .setTitle('Se quer? então pega!')
-            .setDescription(`${message.author} ${randomtext}  ${mencion}`)
-            .setColor('#CB06F2')
-            .setImage(tapalink);
-        message.channel.send(slapEmbed);
-
-
-
-
-    } else if (command === "giveaway") {
-        let giveimg = 'https://i.pinimg.com/originals/41/03/49/41034992711f518f6ff546df87f7ebb3.gif';
-        let intsorteado = argvs[0];
-        let tempo = argvs[1];
-        let giveawayEmbed = new Discord.MessageEmbed()
-            .setTitle('Sorteio novo na área!')
-            .addField(`Intem sorteado`, value = `${intsorteado}`, inline = true)
-            .addField(`Tempo até o fim do sorteio `, value = `${tempo}`, inline = true)
-            .setDescription(`O Adm tá on ! Reajam ( :tada: ) para participar !! `)
-            .setColor('#CB06F2')
-            .setImage(giveimg);
-        message.channel.send(giveawayEmbed).then(sentMessage => {
-
-            msggiveID = sentMessage.id;
-            sentMessage.react('🎉');
-        });
+        message.channel.send(Slap(message.mentions.users.first(), message.author));
 
     } else if (command === "emais") {
 
-        let men1 = argvs[0];
-        let men2 = argvs[1];
-        let eoq = argvs[2];
-        let men1por = Math.floor(Math.random() * 101);
-        let men2por = Math.floor(Math.random() * 101);
-        if (!getUserFromMention(men1) || !getUserFromMention(men2)) {
-
-            message.channel.send('**Marque duas pessoas corretamente ! **')
-
-        } else if (!eoq) {
-            message.channel.send('**Diga algo para os dois competirem !! \nPor exemplo: ?emais @pessoa @pessoa lindo **')
-        } else {
-            message.channel.send(`O  ${men1} é ${men1por}% ${eoq}, e o ${men2} é ${men2por}% ${eoq} `);
-        }
+        message.channel.send(Emais(message.mentions.users.array()[0],message.mentions.users.array()[1], argvs[2]));
 
     } else if (command === "x1") {
 
-        const msgauthor = message.author;
-        let men = argvs[0];
-        if (!men) {
-
-            message.channel.send(`${msgauthor} Marque alguém para tirar um X1!`)
-            return
-        }
-        let mentionIdd = getUserFromMention(men);
-        let lifep1 = 100;
-        let lifep2 = 100;
-        let round = 1;
-        let filter = m => m.author.id === message.author.id
-        let filtermen = m => m.author.id === mentionIdd.id
-        function P2RoundFightGame() {
-
-            round = 2;
-            message.channel.send(`${men}, seu turno, digite Punch para socar e End para encerrar a batalha. \n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
-                message.channel.awaitMessages(filtermen, {
-                    max: 1,
-                    time: 15000,
-                    errors: ['time']
-                })
-                    .then(message => {
-                        message = message.first()
-                        if (message.content.toUpperCase() == 'PUNCH' || message.content.toUpperCase() == 'P') {
-                            let p2dmg = Math.floor(Math.random() * 101);
-                            lifep1 = lifep1 - p2dmg
-                            if (lifep1 <= 0) {
-
-                                message.channel.send(`${men} deu **${p2dmg}** de dano em ${msgauthor}, que agora tem **0** de vida !`)
-                                message.channel.send(`A vida do ${msgauthor} chegou a zero! ${men} **ganhou a batalha !**`)
-                            } else {
-                                message.channel.send(`${men} deu **${p2dmg}** de dano em ${msgauthor}, que agora tem **${lifep1}** de vida !`)
-                                P1RoundFightGame();
-                            }
-                        } else if (message.content.toUpperCase() == 'END' || message.content.toUpperCase() == 'END') {
-                            message.channel.send(`Batalha encerrada!`)
-                        } else {
-                            message.channel.send(`Resposta inválida, reniciando o round ! `)
-                            P2RoundFightGame();
-                        }
-                    })
-                    .catch(collected => {
-                        message.channel.send(`O tempo acabou, ${men} arregou ! Logo o ${msgauthor} **é o vitorioso !**`);
-                        return
-                    });
-            })
-        }
-        function P1RoundFightGame() {
-
-            message.channel.send(`${msgauthor},Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
-                message.channel.awaitMessages(filter, {
-                    max: 1,
-                    time: 15000,
-                    errors: ['time']
-                })
-                    .then(message => {
-                        message = message.first()
-                        if (message.content.toUpperCase() == 'PUNCH' || message.content.toUpperCase() == 'P') {
-                            let p1dmg = Math.floor(Math.random() * 101);
-                            lifep2 = lifep2 - p1dmg
-                            if (lifep2 <= 0) {
-
-                                message.channel.send(`${msgauthor} deu **${p1dmg}** de dano em ${men}, que agora tem **0** de vida !`)
-                                message.channel.send(`A vida de ${men} chegou a zero ! ${msgauthor} **ganhou a batalha !**`)
-                            } else {
-                                message.channel.send(`${msgauthor} deu **${p1dmg}** de dano em ${men}, que agora tem **${lifep2}** de vida !`)
-                                P2RoundFightGame();
-
-                            }
-                        } else if (message.content.toUpperCase() == 'END' || message.content.toUpperCase() == 'END') {
-                            message.channel.send(`Batalha encerrada!`)
-                        } else {
-                            message.channel.send(`Resposta inválida, reniciando o round ! `)
-                            P1RoundFightGame();
-                        }
-                    })
-                    .catch(collected => {
-                        message.channel.send(`O tempo acabou, ${msgauthor} arregou ! Logo o **${men} é o vitorioso !**`);
-                        return
-                    });
-            })
-
-        }
-        P1RoundFightGame();
-
-
+        X1(message.mentions.users.first(), message);
 
     } else if (command === 'clear') {
 
-        if (!message.member.hasPermission("MANAGE_MESSAGES")) {
-            return message.reply("**Você não pode deletar mensagens**....")
-        }
-
-        // Check if args[0] is a number
-        if (isNaN(argvs[0]) || parseInt(argvs[0]) <= 0) {
-            return message.reply("Opa isso não é um número?... Eu não posso deletar 0 mensagens btw...").then(m => m.delete(5000));
-        }
-
-        // Maybe the bot can't delete messages
-        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
-            return message.reply("Desculpa, o ADM não me deu esses poderes!").then(m => m.delete(5000));
-        }
-
-        let deleteAmount;
-
-        if (parseInt(argvs[0]) > 100) {
-            deleteAmount = 100;
-        } else {
-            deleteAmount = parseInt(argvs[0]);
-        }
-
-        message.channel.bulkDelete(deleteAmount, true)
-            .then(deleted => message.channel.send(` **${deleted.size} Mensagens Deletadas **.`))
-            .catch(err => message.reply(`Alguma coisa deu de errado... ${err}`));
-
-        setTimeout(function () {
-
-            message.channel.bulkDelete(1, true);
-        }, 10000);
+        Clear(message, argvs);
 
     } else if (command === 'guess') {
-        let triesreman = 3;
-        let randomnumber = Math.floor(Math.random() * 21);
-        let filter = m => m.author.id === message.author.id
-
-        function AnotherChance() {
-
-            if (triesreman != 0) {
-                message.channel.send(`**${message.author.username}**, Você tem **${triesreman}** para acertar um número de 0 a 20 que eu escolhi !`).then(() => {
-                    message.channel.awaitMessages(filter, {
-                        max: 1,
-                        time: 30000,
-                        errors: ['time']
-                    })
-                        .then(message => {
-                            message = message.first()
-                            if (message.content > 20) {
-
-                                triesreman--
-                                message.channel.send(`Número maior que 20, digite um número de 1 a 20. `)
-                                AnotherChance();
-                                return
-
-
-                            }
-                            if (message.content != randomnumber) {
-
-
-                                triesreman--
-                                message.channel.send(`Resposta errada ou inválida, tente novamente ! `)
-                                AnotherChance();
-
-
-                            } else {
-
-                                message.channel.send(`${message.author}, Parábens você acertou, meu número era ${randomnumber}!`)
-                            }
-
-                        })
-                        .catch(collected => {
-                            message.channel.send('Durante 30s você não digitou nada, comando encerrado');
-                        });
-                })
-            } else {
-
-                message.channel.send(`Terminaram suas chances, você errou, o número que eu escolhi era ${randomnumber}`)
-            }
-
-        }
-        AnotherChance();
+        
+        Guess(message);
 
     } else if (command === 'forca') {
 
-        let letterUssed = "";
-        let randomWordsForHandMAn = randomWordsRequire();
-        let TriesRemanHd = 5;
-        let LettersNum = randomWordsForHandMAn.length
-        let WordToSecret = "";
-        console.log(randomWordsForHandMAn);
-        function ReplaceThelettersHM() {
-            if (LettersNum > 0) {
-
-                LettersNum--;
-                WordToSecret += " -";
-                ReplaceThelettersHM();
-            }
-        }
-        ReplaceThelettersHM();
-        let LetterCorrects = 0;
-        let author = message.author;
-        const msgauthorId = message.author.id;
-        LettersNum = randomWordsForHandMAn.length
-        let LetterinPosition = randomWordsForHandMAn.length - 1;
-        let HandManEmbed = new Discord.MessageEmbed()
-            .setTitle(`Tente acertar a palavra em inglês que eu escolhi! **5** letras erradas te levaram a derrota !! Digite a letra escolhida no chat !`)
-            .setDescription(`Palavra : ${WordToSecret}`)
-            .setColor('#CB06F2')
-        message.channel.send(HandManEmbed).then(sentMessage => {
-
-            msgHandManID = sentMessage.id;
-
-        })
-        function CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace) {
-
-            if (Number.isNaN(+Letter)) {
-
-
-                if (Letter.length > 1) {
-
-                    TriesRemanHd--
-                    if (TriesRemanHd > 0) {
-
-                        message.channel.send(`${author}, Você digitou múltiplas letras, menos **1** chance !! \n Você possui **${TriesRemanHd}** chances sobrando !`)
-                        Play();
-
-                    } else {
-                        message.channel.send(`${author}, Você digitou múltiplas letras, e suas chances acabaram !! GAME OVER !!`)
-                        return
-
-                    }
-
-                } else if (strlen <= -1) {
-
-
-                    if (LetterCorrects === 0) {
-
-                        TriesRemanHd--;
-                        message.channel.send(`Sua letra foi checada, e a palavra não possuia essa letra !!! **${TriesRemanHd}** Chances sobrando !!!`)
-
-                    } else {
-
-                        message.channel.send(`Sua letra foi checada, e colocado nos lugares correto !!!`)
-
-                    }
-                    LetterCorrects = 0;
-                    LoopTimesHand = 0;
-                    letterUssed += `**${Letter}**,  `
-                    HandManEmbed = new Discord.MessageEmbed()
-                        .setTitle(`Tente acertar a palavra em inglês que eu escolhi! **5** letras erradas te levaram a derrota !! Digite a letra escolhida no chat !`)
-                        .setDescription(`Palavra : ${LoctoReplace}`)
-                        .addField('Letras Usadas: ', value = `${letterUssed}`, inline = false)
-                        .setColor('#CB06F2')
-                    message.channel.send(HandManEmbed);
-                    Play()
-
-                } else if (Letter.toUpperCase() === str.charAt(strlen).toUpperCase()) {
-
-                    LetterCorrects++;
-                    LoctoReplace.replaceAt(strlen, Letter);
-                    strlen--;
-                    CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
-
-
-                } else {
-
-                    strlen--;
-                    CheckifHasTheLetterInString(str, strlen, Letter, LoctoReplace);
-                }
-
-
-            } else {
-
-                TriesRemanHd--
-                message.channel.send(`${msgauthorId}, Você digitou um número, menos **1** chance !! Você possui **${TriesRemanHd}** chances sobrando !`)
-                LoopTimesHand = 1;
-                Play();
-            }
-
-        }
-        function AwaitLetter() {
-
-            let filter = m => m.author.id === msgauthorId;
-            message.channel.send(`Esperando sua letra...`).then(() => {
-                message.channel.awaitMessages(filter, {
-                    max: 1,
-                    time: 15000,
-                    errors: ['time']
-                })
-                    .then(message => {
-
-                        message = message.first()
-                        CheckifHasTheLetterInString(randomWordsForHandMAn, LetterinPosition, message.content, WordToSecret);
-                        return;
-
-                    })
-                    .catch(collected => {
-                        message.channel.send('O tempo acabou, e você não mandou nenhuma mensagem ! Fim de jogo !');
-                    });
-            })
-
-        }
-        function Play() {
-
-            if (WordToSecret === randomWordsForHandMAn) {
-                message.channel.send(`${message.author}, parabéns, você acertou a palavra !!! `)
-            } else if (TriesRemanHd > 0) {
-                AwaitLetter()
-            } else {
-                message.channel.send(`Você perdeu, a palavra correta era **${randomWordsForHandMAn}**, mais sorte na próxima vez !`);
-            }
-
-
-        }
-        Play();
-
-
+        Forca(message);
 
     } else if (command === 'mute') {
 
-        //Vendo se o membro tem permissão 
-        if (!message.member.hasPermission("ADMINISTRATOR")) {
-            return message.reply("**Você não pode mutar pessoas !! \nApenas os admiros possuem tal poder !!**....")
-        }
+        Mute(message);
 
-        //Vendo se o Autor do comando marcou alguém corretamente
-        if (!getUserFromMention(argvs[0])) {
+    } 
 
-            return message.reply(`${message.author}**, marque alguém corretamente !!`)
-        }
-
-        let role = message.guild.roles.cache.find(role => role.name === "MUTED");
-        let member = message.mentions.members.first();
-        member.roles.add(role).catch(console.error);
-        message.channel.send(`${member}** foi mutado com sucesso !! **`);
-
-
-    } else if (command === 'desmute') {
-
-        //Vendo se o membro tem permissão 
-        if (!message.member.hasPermission("ADMINISTRATOR")) {
-            return message.reply("**Você não pode desmutar pessoas!! \nApenas os admiros possuem tal poder !!**....")
-        }
-
-        //Vendo se o Autor do comando marcou alguém corretamente
-        if (!getUserFromMention(argvs[0])) {
-
-            return message.reply(`${message.author}**, marque alguém corretamente !!`)
-        }
-
-        let role = message.guild.roles.cache.find(role => role.name === "MUTED");
-        let member = message.mentions.members.first();
-        member.roles.remove(role).catch(console.error);
-        message.channel.send(`${member}** foi desmutado com sucesso !! **`);
-
-    }
-
-
-});
-
-client.on('messageReactionAdd', async (reaction, user) => {
-    // When we receive a reaction we check if the reaction is partial or not
-
-    if (msggiveID != 'null') {
-
-        let userMarq = `@${user.username}#${user.discriminator}`;
-        if (reaction.emoji.name === '🎉') {
-            if (reaction.partial) {
-                // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
-                try {
-                    await reaction.fetch();
-                } catch (error) {
-                    console.error('Something went wrong when fetching the message: ', error);
-                    // Return as `reaction.message.author` may be undefined/null
-                    return;
-                }
-            }
-
-
-            if (userMarq != '@FrozenBot#4607') {
-
-                listadeparti.push(userMarq);
-                console.log(listadeparti);
-
-            }
-        }
-    }
 });
 
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
