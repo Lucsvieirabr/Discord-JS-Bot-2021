@@ -13,6 +13,7 @@ function sendcomandos(message){
         .addField('?slap', value = 'De aquele tapa no mongol que ta enchendo o saco,use ?slap e o nome da pessoa, ou marque ela.', inline = false)
         .addField('?x1', value = 'Chame seu amigo para uma trocação franca sem perder a amizade! Use ?x1 @pessoa.', inline = false)
         .addField('?guess', value = 'Tente acertar um número de 0 a 20 que eu escolhi !!', inline = false)
+        .addField('?meme', value = 'Use ?meme ou ?meme +Sub Reddit de preferência, para receber um meme aleatório !!', inline = false)
         .setColor('#00FBFC')
         .setImage(botimglink);
         message.channel.send(ComandsembedP1);

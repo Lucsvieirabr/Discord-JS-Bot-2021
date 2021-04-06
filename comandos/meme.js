@@ -12,7 +12,6 @@ async function SendMemes(message, argvs){
         let local = '';
         let SubReddit = ['dankmeme', 'me_irl', 'FellowKids', 'memes', 'Tinder', 'BikiniBottomTwitter', '2meirl4meirl', 'ShitPostCrusaders']
         let RandomSub = SubReddit[Math.floor(Math.random() * SubReddit.length)];
-    
         // Agora vamos ver de qual SubReddit vamos pegar a imagem...
         // Se o usuário não inseriu um sub, pegamos um random da array...
         // Se o usuário inseriu, vemos se ele existe, e se não, avisamos o usuário...
@@ -21,13 +20,18 @@ async function SendMemes(message, argvs){
             img = await randomPuppy(RandomSub);
             local = RandomSub;
     
-        }else if(!randomPuppy(argvs[0])){
-    
-            message.channel.send(`${message.author}, **Você escreveu um SubReddit errado !`)
-        }else{
-    
-            img = await randomPuppy(argvs[0])
-            local = argvs[0]
+        }else if(argvs.length > 0){
+            
+            img = await randomPuppy(argvs[0]);
+
+            if(img === undefined){
+                
+                message.channel.send(`${message.author}, **Você escreveu um SubReddit errado ! **`)
+                return
+            }else{
+                img = await randomPuppy(argvs[0])
+                local = argvs[0]
+            }
         }
 
         // Agora criamo um Embed simples, e depois enviamos...
@@ -37,8 +41,8 @@ async function SendMemes(message, argvs){
             .setImage(img);
     
             message.channel.send(MemeEmbed)
-    
    
 }
+
 
 module.exports = SendMemes;
