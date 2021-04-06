@@ -13,7 +13,6 @@ const X1 = require('./comandos/x1.js')
 const Clear = require('./comandos/clear.js')
 const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
-const Mute = require('./comandos/mute.js')
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -64,10 +63,6 @@ client.on('message', message => {
     } else if (command === 'forca') {
 
         Forca(message);
-
-    } else if (command === 'mute') {
-
-        Mute(message);
 
     } 
 
