@@ -2,11 +2,14 @@ const Discord = require('discord.js');
 
 function doCafune(author, mencion) {
   
+  //Checando se o usuário mencionou alguém corretamento, se for uma pessoa, o tipo da variável mencion seria object...
   if (typeof(mencion) != 'object' ) {
 
     return ("**Mencione uma pessoa corretamente, seu cabaço!**");
 
-}
+  }
+  
+  //Array com os links dos gif...
   let cafune = ['https://media.giphy.com/media/ARSp9T7wwxNcs/giphy.gif', 'https://media.giphy.com/media/5tmRHwTlHAA9WkVxTU/giphy.gif',
     'https://media.giphy.com/media/4HP0ddZnNVvKU/giphy.gif', 'https://media.giphy.com/media/109ltuoSQT212w/giphy.gif',
     'https://media.giphy.com/media/xVgGouGtc21H2/giphy.gif', 'https://media.giphy.com/media/ye7OTQgwmVuVy/giphy.gif',
@@ -21,6 +24,9 @@ function doCafune(author, mencion) {
     'https://data.whicdn.com/images/125164822/original.gif', 'https://i.imgur.com/42VnOL9.gif', 'https://thumbs.gfycat.com/NaughtySpottedAsiantrumpetfish-size_restricted.gif',
     'https://media.giphy.com/media/lq72vRtxJtpgQ/giphy.gif', 'https://media1.tenor.com/images/d6bc68f949e78c7d17b55d2f65e445c0/tenor.gif?itemid=5628617'
   ];
+
+  //Sorteando um número aleatório de acordo com o length da array do cafune, e depois sorteando um link aleatório...
+  //Em seguida criamos o Embed com o link do gif de cafune, e retornamos com o Embed ....
   let randomcafune = Math.floor(Math.random() * cafune.length);
   let giflink = cafune[randomcafune];
   let CafEmbed = new Discord.MessageEmbed()

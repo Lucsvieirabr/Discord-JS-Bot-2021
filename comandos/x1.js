@@ -3,11 +3,14 @@ const client = new Discord.Client();
 
 function MakeX1(mencion, message){
 
+    // Vendo se o Autor do comando marcou alguém corretamente
     if (typeof(mencion) != 'object') {
 
         message.channel.send("**Mencione uma  pessoa corretamente, seu cabaço!**");
 
     }
+    
+    // Definindo as váriaveis para o comando, como a vida dos participantes...  
         let mentionIdd = mencion;
         let men = mencion
         let msgauthor = message.author
@@ -16,6 +19,10 @@ function MakeX1(mencion, message){
         let round = 1;
         let filter = m => m.author.id === message.author.id
         let filtermen = m => m.author.id === mentionIdd.id
+
+    // Função do round do P2, esperamos sua resposta, vendo se é End ou Punch...
+    // Se for End encerra o comando, se for Punch calculamos o dano, tiramos da vida do P1...
+    // Verificamos se a vida do P1 chegou a zero, senão damos início ao Roundo do P2 
         function P2RoundFightGame() {
 
             round = 2;
@@ -51,6 +58,8 @@ function MakeX1(mencion, message){
                     });
             })
         }
+
+        // Round do P1, mesmo esquema do Roundo do P2...
         function P1RoundFightGame() {
 
             message.channel.send(`${msgauthor},Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {

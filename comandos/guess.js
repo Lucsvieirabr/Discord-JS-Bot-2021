@@ -1,10 +1,15 @@
 const Discord = require('discord.js');
 
 function Guess(message){
+    
+    // Definindo as chances sobrando do usuário e um número aleatório, assim como o filtro para pegar apenas as mensagens desse usuário...
     let triesreman = 3;
     let randomnumber = Math.floor(Math.random() * 21);
     let filter = m => m.author.id === message.author.id
 
+    // Essa função é básica, verifica se o usuário tem chances sobrando, para poder iniciar outro round...
+    // Se ele possui, esperamos uma resposta, pegamos ela, se for maior que vinte o usuário perde uma chance...
+    // Se for diferente do número aleatório que escolhemos, ele perde uma chance, e renincia o loop, caso for igual ele ganha...
     function AnotherChance() {
 
         if (triesreman != 0) {

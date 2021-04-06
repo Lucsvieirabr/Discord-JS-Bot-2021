@@ -13,6 +13,7 @@ function DoMute(message){
         return message.reply(`**Marque alguém corretamente**!!`)
     }
 
+    // Defindo a role Muted e o membro, e depois dando a role Muted para ele, e retornamos a mensagem de confirmação...
     let role = message.guild.roles.cache.find(role => role.name === "MUTED");
     let member = message.mentions.members.first();
     member.roles.add(role).catch(console.error);

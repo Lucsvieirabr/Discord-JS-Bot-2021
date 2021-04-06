@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
 
 function DoBhask(a, b, c, argvslength, author){
     
+    //Função da formúla de Bhaskara...
     function formbhask(a, b, c) {
 
         let delta = (b * b) - 4 * a * c;
@@ -16,6 +16,9 @@ function DoBhask(a, b, c, argvslength, author){
     
     }
 
+    //Aqui estamos testando se o usuário colocou tres váriaveis, com o argvs.lenght .... 
+    //Se não tiver colocado, retornamos pedindo para colocar as três variáveis...
+    //Se tiver colocado, chamamos a função da formúla de bhaskara e retornamos a mensagem de resposta...
     if (argvslength < 3) {
         return (`Você não colocou todas as **três variáveis necessárias**, ${author}!`);
     }else{

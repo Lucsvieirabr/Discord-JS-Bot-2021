@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 
 function sendcomandos(){
+    
+    // Sem segredo, apenas um criando um Embed normal do discord, e depois retornando...
     const botimglink = 'https://static.wikia.nocookie.net/clubpenguin/images/e/e5/Tusk_Evil.png/revision/latest/scale-to-width-down/856?cb=20130523222135';
     const Comandsembed = new Discord.MessageEmbed()
         .setTitle(`Olá , está é minha lista de comandos:`)
