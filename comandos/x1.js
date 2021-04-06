@@ -26,7 +26,7 @@ function MakeX1(mencion, message){
         function P2RoundFightGame() {
 
             round = 2;
-            message.channel.send(`${men}, seu turno, digite Punch para socar e End para encerrar a batalha. \n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+            message.channel.send(`${men}, seu turno, digite **Punch** para socar e **End** para encerrar a batalha. \n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
                 message.channel.awaitMessages(filtermen, {
                     max: 1,
                     time: 15000,
@@ -62,7 +62,7 @@ function MakeX1(mencion, message){
         // Round do P1, mesmo esquema do Roundo do P2...
         function P1RoundFightGame() {
 
-            message.channel.send(`${msgauthor},Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
+            message.channel.send(`${msgauthor}, Digite **Punch** para socar e **End** para encerrar a batalha.\n Você tem **15 segundos**, após isso a batalha irá se encerrar automaticamente!`).then(() => {
                 message.channel.awaitMessages(filter, {
                     max: 1,
                     time: 15000,

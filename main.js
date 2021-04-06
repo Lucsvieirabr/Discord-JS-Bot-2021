@@ -15,7 +15,6 @@ const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
 const Meme = require('./comandos/meme.js')
 
-
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
