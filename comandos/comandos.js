@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 
-function sendcomandos(){
+function sendcomandos(message){
     
     // Sem segredo, apenas um criando um Embed normal do discord, e depois retornando...
     const botimglink = 'https://static.wikia.nocookie.net/clubpenguin/images/e/e5/Tusk_Evil.png/revision/latest/scale-to-width-down/856?cb=20130523222135';
-    const Comandsembed = new Discord.MessageEmbed()
+    const ComandsembedP1 = new Discord.MessageEmbed()
         .setTitle(`Olá , está é minha lista de comandos:`)
         .addField('?info', value = 'Veja as informações de uma pessoa e seu imagem de perfil, use ?info @pessoa.', inline = false)
         .addField('?bhask', value = 'Calcule uma equação de segundo grau, use ?bhask a b c.', inline = false)
@@ -15,8 +15,7 @@ function sendcomandos(){
         .addField('?guess', value = 'Tente acertar um número de 0 a 20 que eu escolhi !!', inline = false)
         .setColor('#00FBFC')
         .setImage(botimglink);
-
-        return Comandsembed;
+        message.channel.send(ComandsembedP1);
 }
 
 module.exports = sendcomandos;

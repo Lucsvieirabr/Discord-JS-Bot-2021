@@ -1,5 +1,5 @@
 
-function DoBhask(a, b, c, argvslength, author){
+function DoBhask(a, b, c, argvslength, author, message){
     
     //Função da formúla de Bhaskara...
     function formbhask(a, b, c) {
@@ -20,9 +20,9 @@ function DoBhask(a, b, c, argvslength, author){
     //Se não tiver colocado, retornamos pedindo para colocar as três variáveis...
     //Se tiver colocado, chamamos a função da formúla de bhaskara e retornamos a mensagem de resposta...
     if (argvslength < 3) {
-        return (`Você não colocou todas as **três variáveis necessárias**, ${author}!`);
+        message.channel.send(`Você não colocou todas as **três variáveis necessárias**, ${author}!`);
     }else{
-        return formbhask(a, b, c);
+        message.channel.send(formbhask(a, b, c));
     }
 }
 

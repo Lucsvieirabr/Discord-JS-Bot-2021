@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 
-function DoSlap(mencion, author){
+function DoSlap(mencion, author, message){
     
     // Vendo se o Autor do comando marcou alguém corretamente
     if (typeof(mencion) != 'object' ) {
 
-        return ("**Mencione uma pessoa corretamente, seu cabaço!**");
+        message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
 
     }
 
@@ -22,6 +22,6 @@ function DoSlap(mencion, author){
             .setColor('#CB06F2')
             .setImage(tapalink);
             
-    return slapEmbed;
+    message.channel.send(slapEmbed);
 }
 module.exports = DoSlap

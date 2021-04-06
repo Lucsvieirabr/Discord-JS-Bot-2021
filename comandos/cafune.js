@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 
-function doCafune(author, mencion) {
+function doCafune(author, mencion, message) {
   
   //Checando se o usuário mencionou alguém corretamento, se for uma pessoa, o tipo da variável mencion seria object...
   if (typeof(mencion) != 'object' ) {
 
-    return ("**Mencione uma pessoa corretamente, seu cabaço!**");
+    message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
 
   }
   
@@ -35,7 +35,7 @@ function doCafune(author, mencion) {
     .setColor('#0099ff')
     .setImage(giflink);
 
-  return CafEmbed;
+    message.channel.send(CafEmbed);
 }
 
 module.exports = doCafune

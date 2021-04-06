@@ -27,27 +27,27 @@ client.on('message', message => {
 
     if (command === 'comandos') {
        
-        message.channel.send(Comandos());
+        Comandos(message);
 
     } else if (command === 'info') {
 
-        message.channel.send(Info(message.mentions.users.first()));
+        Info(message.mentions.users.first(), message);
 
     } else if (command === 'bhask') {
 
-        message.channel.send(Bhask(argvs[0], argvs[1], argvs[2], argvs.length, message.author));
+        Bhask(argvs[0], argvs[1], argvs[2], argvs.length, message.author, message);
 
     } else if (command === 'cafune') {
 
-        message.channel.send(Cafune(message.author, argvs[0]));
+        Cafune(message.author, message.mentions.users.first(), message);
 
     } else if (command === 'slap') {
 
-        message.channel.send(Slap(message.mentions.users.first(), message.author));
+        Slap(message.mentions.users.first(), message.author, message);
 
     } else if (command === "emais") {
 
-        message.channel.send(Emais(message.mentions.users.array()[0],message.mentions.users.array()[1], argvs[2]));
+        Emais(message.mentions.users.array()[0],message.mentions.users.array()[1], argvs[2], message);
 
     } else if (command === "x1") {
 
