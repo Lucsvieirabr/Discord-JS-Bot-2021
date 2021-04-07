@@ -22,12 +22,13 @@ function sendcomandos(message, LocToPutSentMsgID, IsonPage, EmojiReactName){
         .setImage(botimglink);
 
         if(IsonPage === 0){    
+            
             message.channel.send(ComandsembedP1).then(sentMessage => {
 
                 LocToPutSentMsgID = sentMessage.id;
                 sentMessage.react('⬅️'); 
                 sentMessage.react('➡️');
-                return IsonPage === 1;
+                return IsonPage = 1;
                 
             });       
 
@@ -44,7 +45,7 @@ function sendcomandos(message, LocToPutSentMsgID, IsonPage, EmojiReactName){
                     LocToPutSentMsgID = sentMessage.id;
                     sentMessage.react('⬅️'); 
                     sentMessage.react('➡️');
-                    return IsonPage === 2;
+                    return IsonPage = 2;
                     
                 });       
             }
@@ -53,12 +54,12 @@ function sendcomandos(message, LocToPutSentMsgID, IsonPage, EmojiReactName){
 
             if(EmojiReactName === '⬅️'){
 
-                message.channel.send(ComandsembedP2).then(sentMessage => {
+                message.channel.send(ComandsembedP1).then(sentMessage => {
 
                     LocToPutSentMsgID = sentMessage.id;
                     sentMessage.react('⬅️'); 
                     sentMessage.react('➡️');
-                    return IsonPage === 2;
+                    return IsonPage = 1;
                     
                 });  
                 

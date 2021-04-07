@@ -17,6 +17,7 @@ const Meme = require('./comandos/meme.js')
 
 let CommandMsgListId;
 let CommandListIsonPage = 0;
+let Message;
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -31,6 +32,8 @@ client.on('message', message => {
     if (command === 'comandos') {
        
         Comandos(message, CommandMsgListId, CommandListIsonPage);
+        Message = message;
+        CommandListIsonPage = 1;
 
     } else if (command === 'info') {
 
@@ -77,16 +80,21 @@ client.on('message', message => {
 });
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
 
-Client.on("messageReactionAdd", async (reaction, user, message) => {
+client.on("messageReactionAdd", async (reaction, user, message) => {
 
     if (reaction.message.partial){
         await reaction.message.fetch();
-    } 
-    if (user.id === Client.user.id) {
+    }
+    let userMarq = `@${user.username}#${user.discriminator}`;
+
+    if (userMarq === '@FrozenBot#4607') {
         return;
     } 
-    if(reaction.message.id === CommandMsgListId && reaction.emoji.name === ''){
+    if(reaction.message.id === CommandMsgListId && reaction.emoji.name === '⬅️' || reaction.emoji.name === '➡️'){
 
+        Comandos(Message, CommandMsgListId, CommandListIsonPage, reaction.emoji.name)
+        console.log(CommandListIsonPage)
+        
     }
 
 });
