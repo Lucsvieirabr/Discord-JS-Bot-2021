@@ -15,6 +15,9 @@ const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
 const Meme = require('./comandos/meme.js')
 
+let CommandMsgListId;
+let CommandListIsonPage = 0;
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -27,7 +30,7 @@ client.on('message', message => {
 
     if (command === 'comandos') {
        
-        Comandos(message);
+        Comandos(message, CommandMsgListId, CommandListIsonPage);
 
     } else if (command === 'info') {
 
@@ -73,3 +76,17 @@ client.on('message', message => {
 
 });
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
+
+Client.on("messageReactionAdd", async (reaction, user, message) => {
+
+    if (reaction.message.partial){
+        await reaction.message.fetch();
+    } 
+    if (user.id === Client.user.id) {
+        return;
+    } 
+    if(reaction.message.id === CommandMsgListId && reaction.emoji.name === ''){
+
+    }
+
+});
