@@ -12,6 +12,7 @@ function sendcomandos(IsonPage, EmojiReactName){
         .addField('?bhask', value = 'Calcule uma equação de segundo grau, use ?bhask a b c.', inline = false)
         .addField('?cafune', value = 'Faça um cafuné em alguém, use ?cafune @pessoa.', inline = false)
         .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
+        .addField('?translate', value = 'Use ?translate Texto , que eu traduzo e mando !!!! ', inline = false)
         .setColor('#00FBFC')
         .setImage(botimglink);
 
