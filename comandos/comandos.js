@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 
+// Função Que Retorna o Embed da página.
+// Enviar A Página que está e o Emoji que o usuário reagiu, se reagiu...
 function sendcomandos(IsonPage, EmojiReactName){
     
 
@@ -22,6 +24,8 @@ function sendcomandos(IsonPage, EmojiReactName){
         .setColor('#00FBFC')
         .setImage(botimglink);
 
+        // Se for 0, ou seja, o comando nunca foi chamado, então enviamos que está na página zero;
+        // Se a página é 1, ou 2, vamos testa o emoji que a pessoa reagiu e retornamos a Embed de acordo; 
         if(IsonPage === 0){    
             
             return ComandsembedP1      

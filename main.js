@@ -14,6 +14,7 @@ const Clear = require('./comandos/clear.js')
 const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
 const Meme = require('./comandos/meme.js')
+const ChangePage = require('./comandos/functions/changepage.js')
 
 let CommandMsgListId
 let CommandListIsonPage = 0;
@@ -88,55 +89,57 @@ client.on('message', message => {
 });
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
 
+// Aqui espera a reação do usuário...
+
 client.on("messageReactionAdd", async (reaction, user, message) => {
+
+    // Vendo se a reação é parcial...
 
     if (reaction.message.partial){
         await reaction.message.fetch();
     }
+    
+    // Aqui salvamos o usuário que reagiu...
+
     let userMarq = `@${user.username}#${user.discriminator}`;
+
+    // Se o usuário for o bot, só ignora, retorna...
 
     if (userMarq === '@FrozenBot#4607') {
         return;
     } 
     
+    // Se não for o bot, vamos ver se ele reagiu na mensagem da lista de comandos...
+
     if(reaction.message.id === CommandMsgListId){
+    
+    // Se ele reagiu na imagem, vamos ver qual emoji ele reagiu...
+    // Se for pra voltar e ele estiver na página 2, tiramos a sua reação, para ajuar o usuário a reagir novamante se preciso...
+    // Após isso, chamamos a função que troca a página, e definimos a página que ele está...
+    // Mais informações da função que troca a página, vai na pasta comandos/functions e no arquivo changepage.js...
 
         if(reaction.emoji.name === '⬅️'){
-            
+
             if(CommandListIsonPage === 2){
 
-                MsgCommandSent.edit(Comandos(CommandListIsonPage, '⬅️')).then(sentMessage => {
-                    
-                    reaction.users.remove(user.id);
-                    sentMessage.react('⬅️'); 
-                    sentMessage.react('➡️');
-                    CommandMsgListId = sentMessage.id
-                    CommandListIsonPage = 1;
-                    MsgCommandSent = sentMessage;
+                reaction.users.remove(user.id);
+                ChangePage(CommandListIsonPage, '⬅️', MsgCommandSent)
+                CommandListIsonPage = 1;
 
-        
-        
-                    
-                }); 
             }else{
                 return
             }
             
+        // Se a reação for pra ir pra frente '➡️', vêmos a página que ele está...
+        // Se estiver na página 1, fazemos o mesmo esquema que expliquei anteriormente para trocar de página...
+        // Em todas as partes, se não poder subir ou descer, ele só retorna, e ignora...
         }if(reaction.emoji.name === '➡️'){
 
             if(CommandListIsonPage === 1){
-
-                MsgCommandSent.edit(Comandos(CommandListIsonPage, '➡️')).then(sentMessage => {
-                    
-                    reaction.users.remove(user.id);
-                    sentMessage.react('⬅️'); 
-                    sentMessage.react('➡️');
-                    CommandMsgListId = sentMessage.id
-                    CommandListIsonPage = 2;  
-                    MsgCommandSent = sentMessage;
-  
-                    
-                }); 
+                
+                reaction.users.remove(user.id);
+                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
+                CommandListIsonPage = 2;
 
             }else{
                 return
