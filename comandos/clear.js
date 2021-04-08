@@ -1,4 +1,6 @@
 
+let msgid;
+
 function Clear(message, argvs){
 
     // Verificando se o membro tem permissão de "MANAGE_MESSAGES"...

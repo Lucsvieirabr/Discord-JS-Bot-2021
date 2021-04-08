@@ -5,7 +5,7 @@ function GetinfoFromMencion(mencion, message){
     // Verificando se o 'mencion' é uma pessoa, e pegando os dados dela...
     if (typeof(mencion) != 'object' ) {
 
-        message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
+       return message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
 
     }
     // Embed simples do discord com as informações da mencion....

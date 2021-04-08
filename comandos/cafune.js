@@ -5,7 +5,7 @@ function doCafune(author, mencion, message) {
   //Checando se o usuário mencionou alguém corretamento, se for uma pessoa, o tipo da variável mencion seria object...
   if (typeof(mencion) != 'object' ) {
 
-    message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
+    return message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
 
   }
   

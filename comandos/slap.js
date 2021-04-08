@@ -5,7 +5,7 @@ function DoSlap(mencion, author, message){
     // Vendo se o Autor do comando marcou alguém corretamente
     if (typeof(mencion) != 'object' ) {
 
-        message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
+        return message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
 
     }
 

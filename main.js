@@ -32,7 +32,8 @@ client.on('message', message => {
     const command = argvs.shift().toLocaleLowerCase();
 
     if (command === 'comandos') {
-        
+
+        CommandListIsonPage = 0;
         message.channel.send(Comandos(CommandListIsonPage)).then(sentMessage => {
 
             sentMessage.react('⬅️'); 
@@ -127,6 +128,8 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
                 CommandListIsonPage = 1;
 
             }else{
+
+                reaction.users.remove(user.id);
                 return
             }
             
@@ -142,6 +145,7 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
                 CommandListIsonPage = 2;
 
             }else{
+                reaction.users.remove(user.id);
                 return
             }
             
