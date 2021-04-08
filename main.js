@@ -15,9 +15,10 @@ const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
 const Meme = require('./comandos/meme.js')
 
-let CommandMsgListId;
+let CommandMsgListId
 let CommandListIsonPage = 0;
 let Message;
+let MsgCommandSent;
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -30,11 +31,18 @@ client.on('message', message => {
     const command = argvs.shift().toLocaleLowerCase();
 
     if (command === 'comandos') {
-       
-        Comandos(message, CommandMsgListId, CommandListIsonPage);
-        Message = message;
-        CommandListIsonPage = 1;
+        
+        message.channel.send(Comandos(CommandListIsonPage)).then(sentMessage => {
 
+            sentMessage.react('⬅️'); 
+            sentMessage.react('➡️');
+            CommandMsgListId = sentMessage.id
+            CommandListIsonPage = 1;
+            Message = message;
+            MsgCommandSent = sentMessage;
+
+        }); 
+        
     } else if (command === 'info') {
 
         Info(message.mentions.users.first(), message);
@@ -90,11 +98,53 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
     if (userMarq === '@FrozenBot#4607') {
         return;
     } 
-    if(reaction.message.id === CommandMsgListId && reaction.emoji.name === '⬅️' || reaction.emoji.name === '➡️'){
+    
+    if(reaction.message.id === CommandMsgListId){
 
-        Comandos(Message, CommandMsgListId, CommandListIsonPage, reaction.emoji.name)
-        console.log(CommandListIsonPage)
+        if(reaction.emoji.name === '⬅️'){
+            
+            if(CommandListIsonPage === 2){
+
+                MsgCommandSent.edit(Comandos(CommandListIsonPage, '⬅️')).then(sentMessage => {
+                    
+                    reaction.users.remove(user.id);
+                    sentMessage.react('⬅️'); 
+                    sentMessage.react('➡️');
+                    CommandMsgListId = sentMessage.id
+                    CommandListIsonPage = 1;
+                    MsgCommandSent = sentMessage;
+
         
+        
+                    
+                }); 
+            }else{
+                return
+            }
+            
+        }if(reaction.emoji.name === '➡️'){
+
+            if(CommandListIsonPage === 1){
+
+                MsgCommandSent.edit(Comandos(CommandListIsonPage, '➡️')).then(sentMessage => {
+                    
+                    reaction.users.remove(user.id);
+                    sentMessage.react('⬅️'); 
+                    sentMessage.react('➡️');
+                    CommandMsgListId = sentMessage.id
+                    CommandListIsonPage = 2;  
+                    MsgCommandSent = sentMessage;
+  
+                    
+                }); 
+
+            }else{
+                return
+            }
+            
+            
+
+        }
     }
 
 });
