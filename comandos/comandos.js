@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 // Enviar A Página que está e o Emoji que o usuário reagiu, se reagiu...
 function sendcomandos(IsonPage, EmojiReactName){
     
+    IsonPage = IsonPage - 1;
 
     const botimglink = 'https://static.wikia.nocookie.net/clubpenguin/images/e/e5/Tusk_Evil.png/revision/latest/scale-to-width-down/856?cb=20130523222135';
     const ComandsembedP1 = new Discord.MessageEmbed()
@@ -31,49 +32,9 @@ function sendcomandos(IsonPage, EmojiReactName){
         .setColor('#00FBFC')
         .setImage(botimglink);    
 
-        // Se for 0, ou seja, o comando nunca foi chamado, então enviamos que está na página zero;
-        // Se a página é 1, ou 2, vamos testa o emoji que a pessoa reagiu e retornamos a Embed de acordo; 
-        if(IsonPage === 0){    
-            
-            return ComandsembedP1      
+    const ComandosPagesArray = [ComandsembedP1, ComandsembedP2, ComandsembedP3]
 
-        }else if(IsonPage === 1){
-
-            if(EmojiReactName === '⬅️'){
-
-                return
-
-            }else{
-                
-                return ComandsembedP2  
-            }
-
-        }else if(IsonPage === 2){
-
-            if(EmojiReactName === '⬅️'){
-
-                return ComandsembedP1
-                    
-              
-                
-            }else{
-
-                return ComandsembedP3
-            }
-
-        }else if(IsonPage === 3){
-           
-            if(EmojiReactName === '⬅️'){
-
-                return ComandsembedP2
-                    
-              
-                
-            }else{
-
-                return
-            }
-        }   
+    return ComandosPagesArray[IsonPage]
 }
 
 module.exports = sendcomandos;

@@ -20,7 +20,9 @@ const Trump = require('./comandos/tronaldtrump.js')
 const ChangePage = require('./comandos/functions/changepage.js')
 
 let CommandMsgListId
-let CommandListIsonPage = 0;
+let CommandListIsonPage = 1;
+let MaxCommandPags = 3;
+let MinCommandPags = 1;
 let Message;
 let MsgCommandSent;
 
@@ -36,7 +38,7 @@ client.on('message', message => {
 
     if (command === 'comandos') {
 
-        CommandListIsonPage = 0;
+        CommandListIsonPage = 1;
         message.channel.send(Comandos(CommandListIsonPage)).then(sentMessage => {
 
             sentMessage.react('⬅️'); 
@@ -125,58 +127,30 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
 
     if(reaction.message.id === CommandMsgListId){
     
-    // Se ele reagiu na imagem, vamos ver qual emoji ele reagiu...
-    // Se for pra voltar e ele estiver na página 2, tiramos a sua reação, para ajuar o usuário a reagir novamante se preciso...
-    // Após isso, chamamos a função que troca a página, e definimos a página que ele está...
-    // Mais informações da função que troca a página, vai na pasta comandos/functions e no arquivo changepage.js...
-
         if(reaction.emoji.name === '⬅️'){
 
-            if(CommandListIsonPage === 1){
-
-                reaction.users.remove(user.id);
+            if(CommandListIsonPage-- < MinCommandPags){
                 return
-                
-            }else if(CommandListIsonPage === 2){
-
-                reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, '⬅️', MsgCommandSent)
-                CommandListIsonPage = 1;
-                return
-
-            }else if(CommandListIsonPage === 3){
-
-                reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, '⬅️', MsgCommandSent)
-                CommandListIsonPage = 2;
-                return
-            }
-            
-        // Se a reação for pra ir pra frente '➡️', vêmos a página que ele está...
-        // Se estiver na página 1, fazemos o mesmo esquema que expliquei anteriormente para trocar de página...
-        // Em todas as partes, se não poder subir ou descer, ele só retorna, e ignora...
-        }if(reaction.emoji.name === '➡️'){
-
-            if(CommandListIsonPage === 1){
-                
-                reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
-                CommandListIsonPage = 2;
-                return
-
-            }else if(CommandListIsonPage === 2){
-
-                reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
-                CommandListIsonPage = 3;
-                return
-
             }else{
-
+                CommandListIsonPage--
                 reaction.users.remove(user.id);
-                return
-            }
-        }
-    }
+                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
+                
 
+            }
+                  
+        }else if(reaction.emoji.name === '➡️'){
+
+            if(CommandListIsonPage++ > MaxCommandPags){
+                return
+            }else{
+                
+                CommandListIsonPage++
+                reaction.users.remove(user.id);
+                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
+
+            }
+           
+    }
+ }
 });
