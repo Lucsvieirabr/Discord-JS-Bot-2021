@@ -12,10 +12,10 @@ const Emais = require('./comandos/emais.js')
 const X1 = require('./comandos/x1.js')
 const Clear = require('./comandos/clear.js')
 const Guess = require('./comandos/guess.js')
-const Forca = require('./comandos/forca.js')
 const Meme = require('./comandos/meme.js')
 const Translate = require('./comandos/translate.js')
 const Trump = require('./comandos/tronaldtrump.js')
+const Love = require('./comandos/lovecalculator.js')
 
 const ChangePage = require('./comandos/functions/changepage.js')
 
@@ -41,15 +41,15 @@ client.on('message', message => {
         CommandListIsonPage = 1;
         message.channel.send(Comandos(CommandListIsonPage)).then(sentMessage => {
 
-            sentMessage.react('⬅️'); 
+            sentMessage.react('⬅️');
             sentMessage.react('➡️');
             CommandMsgListId = sentMessage.id
             CommandListIsonPage = 1;
             Message = message;
             MsgCommandSent = sentMessage;
 
-        }); 
-        
+        });
+
     } else if (command === 'info') {
 
         Info(message.mentions.users.first(), message);
@@ -68,7 +68,7 @@ client.on('message', message => {
 
     } else if (command === "emais") {
 
-        Emais(message.mentions.users.array()[0],message.mentions.users.array()[1], argvs[2], message);
+        Emais(message.mentions.users.array()[0], message.mentions.users.array()[1], argvs[2], message);
 
     } else if (command === "x1") {
 
@@ -79,24 +79,24 @@ client.on('message', message => {
         Clear(message, argvs);
 
     } else if (command === 'guess') {
-        
+
         Guess(message);
 
-    } else if (command === 'forca') {
-
-        Forca(message);
-
-    }else if(command === 'meme'){
+    } else if (command === 'meme') {
 
         Meme(message, argvs)
 
-    }else if(command === 'translate'){
+    } else if (command === 'translate') {
 
         Translate(message, argvs)
 
-    }else if(command === 'tronaldtrump'){
+    } else if (command === 'tronaldtrump') {
 
         Trump(message);
+
+    } else if (command === 'howlove') {
+
+        Love(message, message.mentions.users.array()[0], message.mentions.users.array()[1]);
 
     }
 
@@ -105,14 +105,14 @@ client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
 
 // Aqui espera a reação do usuário...
 
-client.on("messageReactionAdd", async (reaction, user, message) => {
+client.on("messageReactionAdd", async(reaction, user, message) => {
 
     // Vendo se a reação é parcial...
 
-    if (reaction.message.partial){
+    if (reaction.message.partial) {
         await reaction.message.fetch();
     }
-    
+
     // Aqui salvamos o usuário que reagiu...
 
     let userMarq = `@${user.username}#${user.discriminator}`;
@@ -121,40 +121,40 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
 
     if (userMarq === '@FrozenBot#4607') {
         return;
-    } 
-    
+    }
+
     // Se não for o bot, vamos ver se ele reagiu na mensagem da lista de comandos...
 
-    if(reaction.message.id === CommandMsgListId){
-    
-        if(reaction.emoji.name === '⬅️'){
+    if (reaction.message.id === CommandMsgListId) {
+
+        if (reaction.emoji.name === '⬅️') {
 
             CommandListIsonPage--
-            if(CommandListIsonPage < MinCommandPags){
+            if (CommandListIsonPage < MinCommandPags) {
                 CommandListIsonPage++
                 reaction.users.remove(user.id);
                 return
-            }else{
-                reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, MsgCommandSent)
-                
-
             }
-                  
-        }else if(reaction.emoji.name === '➡️'){
+            reaction.users.remove(user.id);
+            ChangePage(CommandListIsonPage, MsgCommandSent)
+            return
+
+
+
+        } else if (reaction.emoji.name === '➡️') {
 
             CommandListIsonPage++
-            if(CommandListIsonPage > MaxCommandPags){
+            if (CommandListIsonPage > MaxCommandPags) {
                 CommandListIsonPage--
                 reaction.users.remove(user.id);
                 return
-            }else{
-                
-                reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, MsgCommandSent)
-
             }
-           
+
+            reaction.users.remove(user.id);
+            ChangePage(CommandListIsonPage, MsgCommandSent)
+            return
+
+
+        }
     }
- }
 });

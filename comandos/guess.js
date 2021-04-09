@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
-function Guess(message){
-    
+function Guess(message) {
+
     // Definindo as chances sobrando do usuário e um número aleatório, assim como o filtro para pegar apenas as mensagens desse usuário...
     let triesreman = 3;
     let randomnumber = Math.floor(Math.random() * 21);
@@ -15,10 +15,10 @@ function Guess(message){
         if (triesreman != 0) {
             message.channel.send(`**${message.author.username}**, Você tem **${triesreman}** para acertar um número de 0 a 20 que eu escolhi !`).then(() => {
                 message.channel.awaitMessages(filter, {
-                    max: 1,
-                    time: 30000,
-                    errors: ['time']
-                })
+                        max: 1,
+                        time: 30000,
+                        errors: ['time']
+                    })
                     .then(message => {
                         message = message.first()
                         if (message.content > 20) {

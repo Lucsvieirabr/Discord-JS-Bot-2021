@@ -1,9 +1,11 @@
 const Discord = require('discord.js');
 
 // Função Que Retorna o Embed da página.
-// Enviar A Página que está e o Emoji que o usuário reagiu, se reagiu...
-function sendcomandos(IsonPage){
-    
+// Retorna a página em que o usuário vai, de acordo com página que ele estava..
+function sendcomandos(IsonPage) {
+
+    // Essa parte é importante, temos que diminuir a página em que ele está em 1...
+    // Já que vamos pegar o Embed da página em uma Array e Array começa em 0...
     IsonPage--
 
 
@@ -30,8 +32,9 @@ function sendcomandos(IsonPage){
         .setTitle(`Olá , está é minha lista de comandos, você está na Página 3`)
         .addField('?tronaldtrump', value = 'Use ?tronaldtrump e receba uma frase aleatória do Trump')
         .addField('?translate', value = 'Use ?translate Texto , que eu traduzo e mando !!!! ', inline = false)
+        .addField('?howlove', value = 'Use ?howlove @pessoa @pessoa , para ver como os pombinhos se saem ! ', inline = false)
         .setColor('#00FBFC')
-        .setImage(botimglink);    
+        .setImage(botimglink);
 
     const ComandosPagesArray = [ComandsembedP1, ComandsembedP2, ComandsembedP3]
 

@@ -1,13 +1,10 @@
 const Discord = require('discord.js');
 
-function GetinfoFromMencion(mencion, message){
+function GetinfoFromMencion(mencion, message) {
 
     // Verificando se o 'mencion' é uma pessoa, e pegando os dados dela...
-    if (typeof(mencion) != 'object' ) {
+    if (typeof(mencion) != 'object') return message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
 
-       return message.channel.send("**Mencione uma pessoa corretamente, seu cabaço!**");
-
-    }
     // Embed simples do discord com as informações da mencion....
     const userinfoembed = new Discord.MessageEmbed()
         .setTitle(`Informações de ${mencion.username}`)
@@ -16,6 +13,6 @@ function GetinfoFromMencion(mencion, message){
         .setColor('#00FBFC')
         .setImage(mencion.displayAvatarURL({ dynamic: true }));
 
-        message.channel.send(userinfoembed)
+    return message.channel.send(userinfoembed)
 }
 module.exports = GetinfoFromMencion
