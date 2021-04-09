@@ -132,15 +132,23 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
 
         if(reaction.emoji.name === '⬅️'){
 
-            if(CommandListIsonPage === 2){
+            if(CommandListIsonPage === 1){
+
+                reaction.users.remove(user.id);
+                return
+                
+            }else if(CommandListIsonPage === 2){
 
                 reaction.users.remove(user.id);
                 ChangePage(CommandListIsonPage, '⬅️', MsgCommandSent)
                 CommandListIsonPage = 1;
+                return
 
-            }else{
+            }else if(CommandListIsonPage === 3){
 
                 reaction.users.remove(user.id);
+                ChangePage(CommandListIsonPage, '⬅️', MsgCommandSent)
+                CommandListIsonPage = 2;
                 return
             }
             
@@ -154,14 +162,20 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
                 reaction.users.remove(user.id);
                 ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
                 CommandListIsonPage = 2;
+                return
+
+            }else if(CommandListIsonPage === 2){
+
+                reaction.users.remove(user.id);
+                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
+                CommandListIsonPage = 3;
+                return
 
             }else{
+
                 reaction.users.remove(user.id);
                 return
             }
-            
-            
-
         }
     }
 

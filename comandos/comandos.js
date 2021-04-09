@@ -12,7 +12,6 @@ function sendcomandos(IsonPage, EmojiReactName){
         .addField('?bhask', value = 'Calcule uma equação de segundo grau, use ?bhask a b c.', inline = false)
         .addField('?cafune', value = 'Faça um cafuné em alguém, use ?cafune @pessoa.', inline = false)
         .addField('?emais', value = 'Quem é mais? use ?mais @pessoa @pessoa maisoque.', inline = false)
-        .addField('?translate', value = 'Use ?translate Texto , que eu traduzo e mando !!!! ', inline = false)
         .setColor('#00FBFC')
         .setImage(botimglink);
 
@@ -24,6 +23,13 @@ function sendcomandos(IsonPage, EmojiReactName){
         .addField('?meme', value = 'Use ?meme ou ?meme +Sub Reddit de preferência, para receber um meme aleatório !!', inline = false)
         .setColor('#00FBFC')
         .setImage(botimglink);
+
+    const ComandsembedP3 = new Discord.MessageEmbed()
+        .setTitle(`Olá , está é minha lista de comandos, você está na Página 3`)
+        .addField('?tronaldtrump', value = 'Use ?tronaldtrump e receba uma frase aleatória do Trump')
+        .addField('?translate', value = 'Use ?translate Texto , que eu traduzo e mando !!!! ', inline = false)
+        .setColor('#00FBFC')
+        .setImage(botimglink);    
 
         // Se for 0, ou seja, o comando nunca foi chamado, então enviamos que está na página zero;
         // Se a página é 1, ou 2, vamos testa o emoji que a pessoa reagiu e retornamos a Embed de acordo; 
@@ -47,6 +53,19 @@ function sendcomandos(IsonPage, EmojiReactName){
             if(EmojiReactName === '⬅️'){
 
                 return ComandsembedP1
+                    
+              
+                
+            }else{
+
+                return ComandsembedP3
+            }
+
+        }else if(IsonPage === 3){
+           
+            if(EmojiReactName === '⬅️'){
+
+                return ComandsembedP2
                     
               
                 
