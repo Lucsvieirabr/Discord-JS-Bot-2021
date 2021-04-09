@@ -2,9 +2,10 @@ const Discord = require('discord.js');
 
 // Função Que Retorna o Embed da página.
 // Enviar A Página que está e o Emoji que o usuário reagiu, se reagiu...
-function sendcomandos(IsonPage, EmojiReactName){
+function sendcomandos(IsonPage){
     
-    IsonPage = IsonPage - 1;
+    IsonPage--
+
 
     const botimglink = 'https://static.wikia.nocookie.net/clubpenguin/images/e/e5/Tusk_Evil.png/revision/latest/scale-to-width-down/856?cb=20130523222135';
     const ComandsembedP1 = new Discord.MessageEmbed()

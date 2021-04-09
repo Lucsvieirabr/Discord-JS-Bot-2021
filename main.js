@@ -129,25 +129,29 @@ client.on("messageReactionAdd", async (reaction, user, message) => {
     
         if(reaction.emoji.name === '⬅️'){
 
-            if(CommandListIsonPage-- < MinCommandPags){
+            CommandListIsonPage--
+            if(CommandListIsonPage < MinCommandPags){
+                CommandListIsonPage++
+                reaction.users.remove(user.id);
                 return
             }else{
-                CommandListIsonPage--
                 reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
+                ChangePage(CommandListIsonPage, MsgCommandSent)
                 
 
             }
                   
         }else if(reaction.emoji.name === '➡️'){
 
-            if(CommandListIsonPage++ > MaxCommandPags){
+            CommandListIsonPage++
+            if(CommandListIsonPage > MaxCommandPags){
+                CommandListIsonPage--
+                reaction.users.remove(user.id);
                 return
             }else{
                 
-                CommandListIsonPage++
                 reaction.users.remove(user.id);
-                ChangePage(CommandListIsonPage, '➡️', MsgCommandSent, reaction, user)
+                ChangePage(CommandListIsonPage, MsgCommandSent)
 
             }
            
