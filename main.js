@@ -15,6 +15,8 @@ const Guess = require('./comandos/guess.js')
 const Forca = require('./comandos/forca.js')
 const Meme = require('./comandos/meme.js')
 const Translate = require('./comandos/translate.js')
+const Trump = require('./comandos/tronaldtrump.js')
+
 const ChangePage = require('./comandos/functions/changepage.js')
 
 let CommandMsgListId
@@ -89,6 +91,11 @@ client.on('message', message => {
     }else if(command === 'translate'){
 
         Translate(message, argvs)
+
+    }else if(command === 'tronaldtrump'){
+
+        Trump(message);
+
     }
 
 });
