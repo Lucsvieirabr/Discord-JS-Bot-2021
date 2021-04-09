@@ -11,15 +11,15 @@ async function TronaldTrump(message) {
               accept: 'application/hal+json',
               'x-rapidapi-key': '73c8f7217dmsh0f16014a559a2bep118c18jsna45cbb055155',
               'x-rapidapi-host': 'matchilling-tronald-dump-v1.p.rapidapi.com',
-              useQueryString: true
+              useArray: true
             }
           };
           
           request(options, async function (error, response, body) {
-              if (error) throw new Error(error);            
-              let BodyArray = body.split('"')
-              let Value = await translate(BodyArray[23], {to: 'pt'})
-              let Tag = await translate(BodyArray[15], {to: 'pt'})
+              if (error) throw new Error(error);
+              let BodyArray = body.split('":"')
+              let Value = await translate(BodyArray[13], {to: 'pt'})
+              let Tag = await translate(BodyArray[8], {to: 'pt'})
               const FraseEmbed = new Discord.MessageEmbed()
                  .setTitle(`Uma Frase Do Trump Saindo Do Forno !!!`)
                  .addField('Tag :', value = `${Tag.text}`, inline = false)
