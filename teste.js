@@ -11,11 +11,25 @@ const options = {
   }
 };
 
-request(options, function (error, response, body) {
+request(options, async function (error, response, body) {
 	if (error) throw new Error(error);
 
-    let BodyArray = body.split(",")
-    let Value = BodyArray[5].slice(8)
-    let Tag = BodyArray[3].slice(7)
+  var queryConvert = async function(queryStrr){
+    var queryStr = queryStrr,
+      queryArr = queryStr.replace('?','').split('&'),
+      queryParams = [];
+
+    for (var q = 0, qArrLength = queryArr.length; q < qArrLength; q++) {
+        var qArr = queryArr[q].split('=');
+        queryParams[qArr[0]] = qArr[1];
+    }
+
+    return queryParams;
+}
+
+ let BodyArray = queryConvert(body)
+ let Value = BodyArray[6]
+ let Tag = BodyArray[4]
+ console.log(BodyArray)
     
 });
