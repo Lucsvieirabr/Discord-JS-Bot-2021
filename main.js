@@ -21,8 +21,6 @@ const ChangePage = require('./comandos/functions/changepage.js')
 
 let CommandMsgListId
 let CommandListIsonPage = 1;
-let MaxCommandPags = 3;
-let MinCommandPags = 1;
 let Message;
 let MsgCommandSent;
 
@@ -126,35 +124,19 @@ client.on("messageReactionAdd", async(reaction, user, message) => {
     // Se não for o bot, vamos ver se ele reagiu na mensagem da lista de comandos...
 
     if (reaction.message.id === CommandMsgListId) {
-
-        if (reaction.emoji.name === '⬅️') {
+        reaction.users.remove(user.id);
+        if (reaction.emoji.name === '⬅️' && CommandListIsonPage > 1) {
 
             CommandListIsonPage--
-            if (CommandListIsonPage < MinCommandPags) {
-                CommandListIsonPage++
-                reaction.users.remove(user.id);
-                return
-            }
-            reaction.users.remove(user.id);
             ChangePage(CommandListIsonPage, MsgCommandSent)
             return
 
-
-
-        } else if (reaction.emoji.name === '➡️') {
+        }
+        if (reaction.emoji.name === '➡️' && CommandListIsonPage < 3) {
 
             CommandListIsonPage++
-            if (CommandListIsonPage > MaxCommandPags) {
-                CommandListIsonPage--
-                reaction.users.remove(user.id);
-                return
-            }
-
-            reaction.users.remove(user.id);
             ChangePage(CommandListIsonPage, MsgCommandSent)
             return
-
-
         }
     }
 });
