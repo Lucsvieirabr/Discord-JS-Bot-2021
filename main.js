@@ -16,6 +16,8 @@ const Meme = require('./comandos/meme.js')
 const Translate = require('./comandos/translate.js')
 const Trump = require('./comandos/tronaldtrump.js')
 const Love = require('./comandos/lovecalculator.js')
+const Aula = require('./comandos/aula.js')
+
 
 const ChangePage = require('./comandos/functions/changepage.js')
 
@@ -95,6 +97,10 @@ client.on('message', message => {
     } else if (command === 'howlove') {
 
         Love(message, message.mentions.users.array()[0], message.mentions.users.array()[1]);
+
+    } else if (command === 'aula') {
+
+        Aula(message);
 
     }
 

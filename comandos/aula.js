@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 function Aula(message) {
     const Data = new Date();
     const Time = Data.getHours() + (Data.getMinutes() / 100)
@@ -22,39 +24,49 @@ function Aula(message) {
         [PortLink, PortLink, LingEstranLink, BioLink, EreLink]
 
     ]
+    const AulasDoDia = CronogramaDeAula[Data.getDay() - 1]
     const ClassHour = [{
-            AulaNum = 1,
+            AulaNum: 1,
             StartTime: 7.25,
             EndTime: 8.15
         },
         {
-            AulaNum = 2,
+            AulaNum: 2,
             StartTime: 8.15,
             EndTime: 9.05
         },
         {
-            AulaNum = 3,
+            AulaNum: 3,
             StartTime: 9.20,
             EndTime: 10.10
         },
         {
-            AulaNum = 4,
+            AulaNum: 4,
             StartTime: 10.10,
             EndTime: 11.00
         },
         {
-            AulaNum = 5,
+            AulaNum: 5,
             StartTime: 11.00,
             EndTime: 11.50
         },
 
     ];
     ClassHour.forEach((Class) => {
-        if (Class.StartTime >= Time && Time > Class.EndTime) {
+        if (Class.StartTime <= Time && Time < Class.EndTime) {
 
+            let Aula = new Discord.MessageEmbed()
+                .setTitle('Pega aqui seu link da Aula')
+                .setDescription(`Você está na Aula ${Class.AulaNum}, o link de acesso dela é  : ${AulasDoDia[Class.AulaNum - 1]}`)
+                .setColor('#0099ff')
+                .setImage('http://pa1.narvii.com/7449/105cac9c2c1ea9797438cb3d74eac57ff1ca838fr1-300-300_00.gif')
+
+            message.channel.send(Aula);
 
         }
     })
 
 
 }
+
+module.exports = Aula;
