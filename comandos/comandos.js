@@ -33,6 +33,7 @@ function sendcomandos(IsonPage) {
         .addField('?tronaldtrump', value = 'Use ?tronaldtrump e receba uma frase aleatória do Trump')
         .addField('?translate', value = 'Use ?translate Texto , que eu traduzo e mando !!!! ', inline = false)
         .addField('?howlove', value = 'Use ?howlove @pessoa @pessoa , para ver como os pombinhos se saem ! ', inline = false)
+        .addField('?aula', value = 'Use ?aula, e receba seu o link da sua de acordo com o horário e dia, apenas para o 2A !!', inline = false)
         .setColor('#00FBFC')
         .setImage(botimglink);
 
