@@ -5,6 +5,7 @@ function Aula(message) {
     const Time = Data.getHours() + (Data.getMinutes() / 100)
     if (Data.getDay === 0 || Data.getDay === 6) return message.reply('É final de semana, vai dormir vagabundo !!');
     if (Time < 7.25 || Time > 11.50) return message.reply('Ainda é cedo ou já acabou a sua aula !!');
+    if (Time >= 9.05 && Time < 9.20) return message.reply('Tá no recreio Vagabundo, vai fazer oque com o link ?!!');
     let HistLink = 'https://meet.google.com/lookup/d2tiva74v6?authuser=0&hs=179';
     let MatLink = 'https://meet.google.com/lookup/eet5chxvkt';
     let BioLink = 'https://meet.google.com/lookup/aidnilv2my'
