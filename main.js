@@ -50,59 +50,32 @@ client.on('message', message => {
 
         });
 
-    } else if (command === 'info') {
-
-        Info(message.mentions.users.first(), message);
-
-    } else if (command === 'bhask') {
-
-        Bhask(argvs[0], argvs[1], argvs[2], argvs.length, message.author, message);
-
-    } else if (command === 'cafune') {
-
-        Cafune(message.author, message.mentions.users.first(), message);
-
-    } else if (command === 'slap') {
-
-        Slap(message.mentions.users.first(), message.author, message);
-
-    } else if (command === "emais") {
-
-        Emais(message.mentions.users.array()[0], message.mentions.users.array()[1], argvs[2], message);
-
-    } else if (command === "x1") {
-
-        X1(message.mentions.users.first(), message);
-
-    } else if (command === 'clear') {
-
-        Clear(message, argvs);
-
-    } else if (command === 'guess') {
-
-        Guess(message);
-
-    } else if (command === 'meme') {
-
-        Meme(message, argvs)
-
-    } else if (command === 'translate') {
-
-        Translate(message, argvs)
-
-    } else if (command === 'tronaldtrump') {
-
-        Trump(message);
-
-    } else if (command === 'howlove') {
-
-        Love(message, message.mentions.users.array()[0], message.mentions.users.array()[1]);
-
-    } else if (command === 'aula') {
-
-        Aula(message);
-
     }
+    if (command === 'info') Info(message.mentions.users.first(), message);
+
+    if (command === 'bhask') Bhask(argvs[0], argvs[1], argvs[2], argvs.length, message.author, message);
+
+    if (command === 'cafune') Cafune(message.author, message.mentions.users.first(), message);
+
+    if (command === 'slap') Slap(message.mentions.users.first(), message.author, message);
+
+    if (command === "emais") Emais(message.mentions.users.array()[0], message.mentions.users.array()[1], argvs[2], message);
+
+    if (command === "x1") X1(message.mentions.users.first(), message);
+
+    if (command === 'clear') Clear(message, argvs);
+
+    if (command === 'guess') Guess(message);
+
+    if (command === 'meme') Meme(message, argvs)
+
+    if (command === 'translate') Translate(message, argvs)
+
+    if (command === 'tronaldtrump') Trump(message);
+
+    if (command === 'howlove') Love(message, message.mentions.users.array()[0], message.mentions.users.array()[1]);
+
+    if (command === 'aula') Aula(message);
 
 });
 client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
@@ -113,19 +86,13 @@ client.on("messageReactionAdd", async(reaction, user, message) => {
 
     // Vendo se a reação é parcial...
 
-    if (reaction.message.partial) {
-        await reaction.message.fetch();
-    }
+    if (reaction.message.partial) await reaction.message.fetch();
 
-    // Aqui salvamos o usuário que reagiu...
 
-    let userMarq = `@${user.username}#${user.discriminator}`;
+    // Se o usuário for um bot, só ignora, retorna...
 
-    // Se o usuário for o bot, só ignora, retorna...
+    if (user.bot) return
 
-    if (userMarq === '@FrozenBot#4607') {
-        return;
-    }
 
     // Se não for o bot, vamos ver se ele reagiu na mensagem da lista de comandos...
 
