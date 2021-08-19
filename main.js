@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+require('dotenv').config()
 
 const prefix = '?';
 
@@ -78,7 +79,7 @@ client.on('message', message => {
     if (command === 'aula') Aula(message);
 
 });
-client.login('ODI1MDkwMTU1MDUxMjIxMDMy.YF43Fg.6H4XpBUsX4yxHeUTxwkPMUWjvTU');
+client.login(process.env.DISCORD_TOKEN);
 
 // Aqui espera a reação do usuário...
 
